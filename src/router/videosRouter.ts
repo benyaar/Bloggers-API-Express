@@ -33,11 +33,12 @@ videosRouter.put('/:id', async (req:Request, res:Response)=>{
     const availableResolutions = req.body.availableResolutions
     const canBeDownloaded = req.body.canBeDownloaded
     const minAgeRestriction = req.body.minAgeRestriction
+    const publicationDate = req.body.publicationDate
 
     const videoId = +req.params.id
     const getVideoById = await queryRepository.getVideoById(videoId)
     if(!getVideoById) return  res.sendStatus(404)
-    await videosService.updateVideo(videoId, title, author, availableResolutions, canBeDownloaded, minAgeRestriction)
+    await videosService.updateVideo(videoId, title, author, availableResolutions, canBeDownloaded, minAgeRestriction, publicationDate)
 
     res.sendStatus(204)
 })

@@ -8,7 +8,10 @@ export const authorValidation = body('author').isLength({min:1, max: 20})
 export const expressValidator = (req:Request, res:Response, next:NextFunction) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
+        return res.status(400).json({ errorsMessages: errors.array({onlyFirstError: true}).map( e => {
+               return {message: e.msg, field: e.param}
+
+            }) });
     }
     next()
 }

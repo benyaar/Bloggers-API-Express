@@ -19,8 +19,8 @@ export const videosService = {
       return await videosRepository.createNewVideo(newVideo)
     },
     async updateVideo(videoId: number, title:string, author:string,
-                      availableResolutions: [], canBeDownloaded: boolean, minAgeRestriction:number){
-        return videosRepository.updateVideo(videoId, title, author, availableResolutions, canBeDownloaded, minAgeRestriction)
+                      availableResolutions: [], canBeDownloaded: boolean, minAgeRestriction:number, publicationDate: Date){
+        return videosRepository.updateVideo(videoId, title, author, availableResolutions, canBeDownloaded, minAgeRestriction, publicationDate)
     },
     async deleteVideo(id: number){
         return videosRepository.deleteVideo(id)

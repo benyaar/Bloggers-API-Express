@@ -10,9 +10,9 @@ export const videosRepository = {
     },
     async updateVideo(id: number, title:string, author:string,
                       availableResolutions: [], canBeDownloaded: boolean,
-                      minAgeRestriction:number){
+                      minAgeRestriction:number, publicationDate: Date){
        const updateVideo =  await videosCollection.updateOne({id}, {$set:{title, author, availableResolutions,
-                canBeDownloaded, minAgeRestriction, publicationDate: new Date() }})
+                canBeDownloaded, minAgeRestriction, publicationDate: publicationDate }})
         return updateVideo.matchedCount === 1
     },
     async deleteVideo(id: number){
