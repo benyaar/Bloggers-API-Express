@@ -11,8 +11,9 @@ videosRouter.post('/', async (req:Request, res:Response)=>{
     const title = req.body.title
     const author = req.body.author
     const availableResolutions = req.body.availableResolutions
-
     const createNewVideo = await videosService.createNewVideo(title, author, availableResolutions)
+
+
     res.status(201).send(createNewVideo)
 })
 
@@ -25,7 +26,7 @@ videosRouter.get('/', async (req:Request, res:Response)=>{
 videosRouter.get('/:id', async (req:Request, res:Response)=>{
     const videoId = +req.params.id
     const getVideoById = await queryRepository.getVideoById(videoId)
-    if(!getVideoById) res.sendStatus(404)
+    if(!getVideoById) return  res.sendStatus(404)
     res.status(200).send(getVideoById)
 })
 
@@ -38,7 +39,7 @@ videosRouter.put('/:id', async (req:Request, res:Response)=>{
 
     const videoId = +req.params.id
     const getVideoById = await queryRepository.getVideoById(videoId)
-    if(!getVideoById) res.sendStatus(404)
+    if(!getVideoById) return  res.sendStatus(404)
     await videosService.updateVideo(videoId, title, author, availableResolutions, canBeDownloaded, minAgeRestriction)
 
     res.sendStatus(204)
@@ -47,9 +48,9 @@ videosRouter.put('/:id', async (req:Request, res:Response)=>{
 videosRouter.delete('/:id', async (req:Request, res:Response)=>{
     const videoId = +req.params.id
     const getVideoById = await queryRepository.getVideoById(videoId)
-    if(!getVideoById) res.sendStatus(404)
+    if(!getVideoById) return res.sendStatus(404)
     await videosService.deleteVideo(videoId)
-    res.status(200).send(getVideoById)
+    res.status(204).send(getVideoById)
 })
 
 

@@ -4,7 +4,9 @@ import {videosCollection} from "./db";
 
 export const videosRepository = {
     async createNewVideo(newVideo: VideoDBType) {
-        return videosCollection.insertOne(newVideo)
+        await videosCollection.insertOne(newVideo)
+        const {_id, ...newVideoCopy} = newVideo
+        return newVideoCopy
     },
     async updateVideo(id: number, title:string, author:string,
                       availableResolutions: [], canBeDownloaded: boolean,

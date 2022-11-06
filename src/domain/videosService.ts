@@ -4,18 +4,19 @@ import {ObjectId} from "mongodb";
 
 export const videosService = {
     async createNewVideo(title: string, author: string, availableResolutions: []){
+
         const newVideo:VideoDBType = {
-            id: +ObjectId,
+            _id: new ObjectId(),
+            id: +new Date(),
             title: title,
             author: author,
-            canBeDownloaded: true,
+            canBeDownloaded: false,
             minAgeRestriction: null,
             createdAt: new Date(),
-            publicationDate: new Date(),
+            publicationDate: new Date(Date.now() + (3600 * 1000  * 24)),
             availableResolutions: availableResolutions
         }
-       await videosRepository.createNewVideo(newVideo)
-        return newVideo
+      return await videosRepository.createNewVideo(newVideo)
     },
     async updateVideo(videoId: number, title:string, author:string,
                       availableResolutions: [], canBeDownloaded: boolean, minAgeRestriction:number){

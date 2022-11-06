@@ -1,3 +1,5 @@
+import {ObjectId} from "mongodb";
+
 export type VideoDBType = {
     "id": number,
     "title": string,
@@ -6,6 +8,9 @@ export type VideoDBType = {
     "minAgeRestriction": null | number,
     "createdAt": Date,
     "publicationDate": Date,
-    "availableResolutions": []
+    "availableResolutions": [],
+    _id: ObjectId
+
 }
+
 
