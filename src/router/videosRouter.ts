@@ -17,7 +17,7 @@ videosRouter.post('/', async (req:Request, res:Response)=>{
 })
 
 videosRouter.get('/', async (req:Request, res:Response)=>{
-    const getAllVideos = queryRepository.getAllVideos()
+    const getAllVideos = await queryRepository.getAllVideos()
     res.status(200).send(getAllVideos)
 
 })
