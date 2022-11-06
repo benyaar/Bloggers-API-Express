@@ -5,6 +5,6 @@ export const queryRepository = {
         return videosCollection.find({}, {projection: {_id:0}}).toArray()
     },
     async getVideoById(id: number) {
-        return videosCollection.findOne({id})
+        return videosCollection.findOne({id}, {projection: {_id:0}})
     }
 }

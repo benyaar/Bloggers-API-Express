@@ -1,18 +1,15 @@
 import {Router, Request, Response} from "express";
 import {videosService} from "../domain/videosService";
 import {queryRepository} from "../queryRepository/queryRepository";
-
-
+import {authorValidation, expressValidator, titleValidation} from "../middleware/expressValidator";
 
 export const videosRouter = Router({})
 
-
-videosRouter.post('/', async (req:Request, res:Response)=>{
+videosRouter.post('/', titleValidation, authorValidation, expressValidator, async (req:Request, res:Response)=>{
     const title = req.body.title
     const author = req.body.author
     const availableResolutions = req.body.availableResolutions
     const createNewVideo = await videosService.createNewVideo(title, author, availableResolutions)
-
 
     res.status(201).send(createNewVideo)
 })
