@@ -3,7 +3,7 @@ import {body, validationResult} from 'express-validator'
 
 export const titleValidation = body('title').isLength({min:1, max: 40})
 export const authorValidation = body('author').isLength({min:1, max: 20})
-export const minAgeRestrictionValidation = body('minAgeRestriction').isLength({min:1, max: 18})
+export const minAgeRestrictionValidation = body('minAgeRestriction').isInt({min:1, max: 18})
 export const canBeDownloadedValidation = body('canBeDownloaded').isBoolean()
 
 
