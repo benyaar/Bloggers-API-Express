@@ -14,10 +14,6 @@ videosRouter.post('/', titleValidation, authorValidation, availableResolutionsVa
     const author = req.body.author
     const availableResolutions = req.body.availableResolutions
 
-    // const resolution = ["P144", 'P240', 'P360', 'P480', 'P720', 'P1080', 'P1440','P2160']
-    // const valid = availableResolutions.every(i => resolution.includes(i))
-    // console.log(valid)
-    // if(!valid) return res.sendStatus(400)
 
     const createNewVideo = await videosService.createNewVideo(title, author, availableResolutions)
 
