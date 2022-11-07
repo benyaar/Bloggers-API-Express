@@ -12,7 +12,7 @@ export const videosRouter = Router({})
 videosRouter.post('/', titleValidation, authorValidation, availableResolutionsValidation, expressValidator, async (req:Request, res:Response)=>{
     const title = req.body.title
     const author = req.body.author
-    const availableResolutions = req.body.availableResolutionsK
+    const availableResolutions = req.body.availableResolutions
 
     // const resolution = ["P144", 'P240', 'P360', 'P480', 'P720', 'P1080', 'P1440','P2160']
     // const valid = availableResolutions.every(i => resolution.includes(i))
