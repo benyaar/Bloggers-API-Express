@@ -3,6 +3,7 @@ import {body, validationResult} from 'express-validator'
 
 export const titleValidation = body('title').isLength({min:1, max: 40})
 export const authorValidation = body('author').isLength({min:1, max: 20})
+export const availableResolutionsValidation = body('availableResolutions').isIn(["P144", 'P240', 'P360', 'P480', 'P720', 'P1080', 'P1440','P2160'])
 
 
 export const expressValidator = (req:Request, res:Response, next:NextFunction) => {

@@ -7,7 +7,7 @@ import {deleteDataRouter} from "./router/deleteDataRouter";
 
 
 const app = express()
-const port = process.env.PORT || 3001
+const port = process.env.PORT || 3000
 
 app.use(bodyParser.json())
 app.use(cors())

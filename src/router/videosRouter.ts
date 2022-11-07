@@ -1,14 +1,24 @@
 import {Router, Request, Response} from "express";
 import {videosService} from "../domain/videosService";
 import {queryRepository} from "../queryRepository/queryRepository";
-import {authorValidation, expressValidator, titleValidation} from "../middleware/expressValidator";
+import {
+    authorValidation, availableResolutionsValidation,
+    expressValidator,
+    titleValidation
+} from "../middleware/expressValidator";
 
 export const videosRouter = Router({})
 
-videosRouter.post('/', titleValidation, authorValidation, expressValidator, async (req:Request, res:Response)=>{
+videosRouter.post('/', titleValidation, authorValidation, availableResolutionsValidation, expressValidator, async (req:Request, res:Response)=>{
     const title = req.body.title
     const author = req.body.author
-    const availableResolutions = req.body.availableResolutions
+    const availableResolutions = req.body.availableResolutionsK
+
+    // const resolution = ["P144", 'P240', 'P360', 'P480', 'P720', 'P1080', 'P1440','P2160']
+    // const valid = availableResolutions.every(i => resolution.includes(i))
+    // console.log(valid)
+    // if(!valid) return res.sendStatus(400)
+
     const createNewVideo = await videosService.createNewVideo(title, author, availableResolutions)
 
     res.status(201).send(createNewVideo)
@@ -27,7 +37,7 @@ videosRouter.get('/:id', async (req:Request, res:Response)=>{
     res.status(200).send(getVideoById)
 })
 
-videosRouter.put('/:id', async (req:Request, res:Response)=>{
+videosRouter.put('/:id', titleValidation, authorValidation, expressValidator, async (req:Request, res:Response)=>{
     const title = req.body.title
     const author = req.body.author
     const availableResolutions = req.body.availableResolutions
