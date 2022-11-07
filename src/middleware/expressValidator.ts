@@ -5,7 +5,7 @@ export const titleValidation = body('title').isLength({min:1, max: 40})
 export const authorValidation = body('author').isLength({min:1, max: 20})
 export const minAgeRestrictionValidation = body('minAgeRestriction').isInt({min:1, max: 18})
 export const canBeDownloadedValidation = body('canBeDownloaded').isBoolean()
-export const publicationDateValidation = body("publicationDate").isDate()
+export const publicationDateValidation = body("publicationDate").isDate({format: 'YYYY-MM-DDTHH:mm:ss.sssZ'})
 
 
 export const expressValidator = (req:Request, res:Response, next:NextFunction) => {
