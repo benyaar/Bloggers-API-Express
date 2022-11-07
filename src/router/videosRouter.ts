@@ -42,6 +42,7 @@ videosRouter.put('/:id', titleValidation, authorValidation, availableResolutions
     const minAgeRestriction = req.body.minAgeRestriction
     const publicationDate = req.body.publicationDate
 
+
     const videoId = +req.params.id
     const getVideoById = await queryRepository.getVideoById(videoId)
     if(!getVideoById) return  res.sendStatus(404)
