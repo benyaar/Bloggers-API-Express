@@ -33,7 +33,7 @@ videosRouter.get('/:id', async (req:Request, res:Response)=>{
     res.status(200).send(getVideoById)
 })
 
-videosRouter.put('/:id', titleValidation, authorValidation, expressValidator, async (req:Request, res:Response)=>{
+videosRouter.put('/:id', titleValidation, authorValidation, availableResolutionsValidation, expressValidator, async (req:Request, res:Response)=>{
     const title = req.body.title
     const author = req.body.author
     const availableResolutions = req.body.availableResolutions
