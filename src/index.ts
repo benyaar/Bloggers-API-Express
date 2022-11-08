@@ -4,6 +4,7 @@ import bodyParser from "body-parser";
 import cors from "cors"
 import {runDB} from "./repository/db";
 import {deleteDataRouter} from "./router/deleteDataRouter";
+import {bloggersRouter} from "./router/bloggersRouter";
 
 
 const app = express()
@@ -13,6 +14,7 @@ app.use(bodyParser.json())
 app.use(cors())
 app.use("/videos", videosRouter)
 app.use("/testing", deleteDataRouter)
+app.use("/blogs", bloggersRouter)
 
 const startApp = async ()=>{
     await runDB()

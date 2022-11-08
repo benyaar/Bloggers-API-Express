@@ -10,7 +10,13 @@ export type VideoDBType = {
     "publicationDate": Date,
     "availableResolutions": [],
     _id: ObjectId
-
 }
+
+export type BlogDBType = {
+    "id": number,
+    "name": string,
+    "youtubeUrl": string
+}
+
 
 
