@@ -3,6 +3,7 @@ import {postsService} from "../domain/postsService";
 import {queryRepository} from "../queryRepository/queryRepository";
 import {basicAuthMiddleware} from "../middleware/basicAuthMiddleware";
 import {
+    blogIdValidation,
     contentValidation,
     expressValidator,
     shortDescriptionPostValidation,
@@ -12,7 +13,7 @@ import {
 
 export const postsRouter = Router({})
 
-postsRouter.post("/", basicAuthMiddleware, titlePostValidation, shortDescriptionPostValidation, contentValidation,
+postsRouter.post("/", basicAuthMiddleware, blogIdValidation, titlePostValidation, shortDescriptionPostValidation, contentValidation,
     expressValidator, async (req:Request, res:Response) =>{
     const title = req.body.title
     const shortDescription = req.body.shortDescription
@@ -38,7 +39,7 @@ postsRouter.post("/", basicAuthMiddleware, titlePostValidation, shortDescription
 })
 postsRouter.get("/", async (req:Request, res:Response) =>{
     const findPosts = await queryRepository.getAllPosts()
-    res.status(201).send(findPosts)
+    res.status(200).send(findPosts)
 
 })
 
@@ -49,7 +50,7 @@ postsRouter.get("/:id", async (req:Request, res:Response) =>{
     res.status(200).send(findPostById)
 })
 
-postsRouter.put("/:id", basicAuthMiddleware, titlePostValidation, shortDescriptionPostValidation, contentValidation,
+postsRouter.put("/:id", basicAuthMiddleware, blogIdValidation, titlePostValidation, shortDescriptionPostValidation, contentValidation,
     expressValidator, basicAuthMiddleware, async (req:Request, res:Response) =>{
     const title = req.body.title
     const shortDescription = req.body.shortDescription

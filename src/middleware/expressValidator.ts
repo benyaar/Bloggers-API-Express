@@ -1,5 +1,6 @@
 import {NextFunction, Request, Response} from "express";
 import {body, validationResult} from 'express-validator'
+import {queryRepository} from "../queryRepository/queryRepository";
 
 export const titleVideoValidation = body('title').trim().isLength({min:1, max: 40})
 export const authorVideoValidation = body('author').trim().isLength({min:1, max: 20})
@@ -11,6 +12,10 @@ export const youtubeUrlValidation = body('youtubeUrl').trim().isLength({min:1, m
 export const titlePostValidation = body('title').trim().isLength({min:1, max: 30})
 export const shortDescriptionPostValidation = body('shortDescription').trim().isLength({min:1, max: 100})
 export const contentValidation = body('content').trim().isLength({min:1, max: 1000})
+export const blogIdValidation = body('blogId').custom(async (value) => {
+    const blogId = await queryRepository.getBlogById(value)
+    if(!blogId)  throw new Error('Password confirmation does not match password')
+    })
 
 export const expressValidator = (req:Request, res:Response, next:NextFunction) => {
     const errors = validationResult(req);
