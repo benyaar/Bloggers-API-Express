@@ -45,6 +45,7 @@ postsRouter.get("/", async (req:Request, res:Response) =>{
 postsRouter.get("/:id", async (req:Request, res:Response) =>{
     const postId = req.params.id
     const findPostById = await queryRepository.getPostById(postId)
+    if(!findPostById) return res.sendStatus(404)
     res.status(200).send(findPostById)
 })
 
