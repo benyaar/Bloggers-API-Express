@@ -19,7 +19,7 @@ bloggersRouter.post("/", basicAuthMiddleware, nameBlogValidation, youtubeUrlVali
 
 bloggersRouter.get("/", async (req:Request, res:Response) => {
     const getAllBlogs = await queryRepository.getAllBlogs()
-    res.status(201).send(getAllBlogs)
+    res.status(200).send(getAllBlogs)
 })
 
 bloggersRouter.get('/:id', async (req:Request, res:Response)=>{
