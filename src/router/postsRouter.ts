@@ -34,18 +34,18 @@ postsRouter.post("/", basicAuthMiddleware, titlePostValidation, shortDescription
     const createNewPost = await postsService.createNewPost(title, shortDescription, content, findBlogById)
 
     const {_id, ...createNewPostCopy} = createNewPost
-    res.status(200).send(createNewPostCopy)
+    res.status(201).send(createNewPostCopy)
 })
 postsRouter.get("/", async (req:Request, res:Response) =>{
     const findPosts = await queryRepository.getAllPosts()
-    res.status(200).send(findPosts)
+    res.status(201).send(findPosts)
 
 })
 
 postsRouter.get("/:id", async (req:Request, res:Response) =>{
     const postId = req.params.id
     const findPostById = await queryRepository.getPostById(postId)
-    res.status(201).send(findPostById)
+    res.status(200).send(findPostById)
 })
 
 postsRouter.put("/:id", basicAuthMiddleware, titlePostValidation, shortDescriptionPostValidation, contentValidation,
