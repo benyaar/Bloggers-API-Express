@@ -45,7 +45,7 @@ postsRouter.get("/", async (req:Request, res:Response) =>{
 postsRouter.get("/:id", async (req:Request, res:Response) =>{
     const postId = req.params.id
     const findPostById = await queryRepository.getPostById(postId)
-    res.status(201).send(findPostById)
+    res.status(200).send(findPostById)
 })
 
 postsRouter.put("/:id", basicAuthMiddleware, titlePostValidation, shortDescriptionPostValidation, contentValidation,
