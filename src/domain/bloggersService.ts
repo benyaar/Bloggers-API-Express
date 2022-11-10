@@ -9,7 +9,7 @@ export const bloggersService = {
             id: new ObjectId().toString(),
             name: name,
             youtubeUrl:youtubeUrl,
-            createAt: new Date()
+            createdAt: new Date()
         }
         await bloggersRepository.createNewBlog(newBlogger)
         return newBlogger
