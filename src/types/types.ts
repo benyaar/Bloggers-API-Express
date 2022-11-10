@@ -16,7 +16,8 @@ export type BlogDBType = {
     _id: ObjectId,
     id: string,
     name: string,
-    youtubeUrl: string
+    youtubeUrl: string,
+    createAt: Date,
 }
 export type PostDBType = {
     _id: ObjectId,
@@ -25,7 +26,8 @@ export type PostDBType = {
     shortDescription: string,
     content: string,
     blogId: string,
-    blogName: string
+    blogName: string,
+    createAt: Date,
 }
 
 

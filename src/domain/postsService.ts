@@ -14,6 +14,7 @@ export const postsService = {
             content: content,
             blogId: blogs.id,
             blogName: blogs.name,
+            createAt: new Date()
         }
         await postsRepository.createNewPost(newPost)
         return newPost
