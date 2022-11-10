@@ -1,16 +1,16 @@
 import {NextFunction, Request, Response} from "express";
 import {body, validationResult} from 'express-validator'
 
-export const titleVideoValidation = body('title').isLength({min:1, max: 40}).trim()
-export const authorVideoValidation = body('author').isLength({min:1, max: 20}).trim()
-export const minAgeRestrictionValidation = body('minAgeRestriction').isInt({min:1, max: 18}).trim()
-export const canBeDownloadedValidation = body('canBeDownloaded').isBoolean().trim()
-export const publicationDateValidation = body("publicationDate").matches("/(\\d{4}-[01]\\d-[0-3]\\dT[0-2]\\d:[0-5]\\d:[0-5]\\d\\.\\d+)|(\\d{4}-[01]\\d-[0-3]\\dT[0-2]\\d:[0-5]\\d:[0-5]\\d)|(\\d{4}-[01]\\d-[0-3]\\dT[0-2]\\d:[0-5]\\d)/").trim()
-export const nameBlogValidation = body('name').isLength({min:1, max: 15}).trim()
-export const youtubeUrlValidation = body('youtubeUrl').isLength({min:1, max: 100}).isURL().trim()
-export const titlePostValidation = body('title').isLength({min:1, max: 30}).trim()
-export const shortDescriptionPostValidation = body('shortDescription').isLength({min:1, max: 100}).trim()
-export const contentValidation = body('content').isLength({min:1, max: 1000}).trim()
+export const titleVideoValidation = body('title').trim().isLength({min:1, max: 40})
+export const authorVideoValidation = body('author').trim().isLength({min:1, max: 20})
+export const minAgeRestrictionValidation = body('minAgeRestriction').trim().isInt({min:1, max: 18})
+export const canBeDownloadedValidation = body('canBeDownloaded').trim().isBoolean().trim()
+export const publicationDateValidation = body("publicationDate").trim().matches("/(\\d{4}-[01]\\d-[0-3]\\dT[0-2]\\d:[0-5]\\d:[0-5]\\d\\.\\d+)|(\\d{4}-[01]\\d-[0-3]\\dT[0-2]\\d:[0-5]\\d:[0-5]\\d)|(\\d{4}-[01]\\d-[0-3]\\dT[0-2]\\d:[0-5]\\d)/")
+export const nameBlogValidation = body('name').trim().isLength({min:1, max: 15})
+export const youtubeUrlValidation = body('youtubeUrl').trim().isLength({min:1, max: 100}).isURL()
+export const titlePostValidation = body('title').trim().isLength({min:1, max: 30})
+export const shortDescriptionPostValidation = body('shortDescription').trim().isLength({min:1, max: 100})
+export const contentValidation = body('content').trim().isLength({min:1, max: 1000})
 
 export const expressValidator = (req:Request, res:Response, next:NextFunction) => {
     const errors = validationResult(req);
