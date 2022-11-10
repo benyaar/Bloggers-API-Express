@@ -6,6 +6,6 @@ export const basicAuthMiddleware = (req:Request, res: Response, next:NextFunctio
     if(authBasicPassword === 'YWRtaW46cXdlcnR5'){
         next()
     }else{
-        return res.sendStatus(401)
+        return res.sendStatus(400)
     }
 }
