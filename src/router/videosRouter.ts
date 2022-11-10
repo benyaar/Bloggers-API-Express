@@ -2,14 +2,14 @@ import {Router, Request, Response} from "express";
 import {videosService} from "../domain/videosService";
 import {queryRepository} from "../queryRepository/queryRepository";
 import {
-    authorValidation, availableResolutionsValidation, canBeDownloadedValidation,
+    authorVideoValidation, availableResolutionsValidation, canBeDownloadedValidation,
     expressValidator, minAgeRestrictionValidation, publicationDateValidation,
-    titleValidation
+    titleVideoValidation
 } from "../middleware/expressValidator";
 
 export const videosRouter = Router({})
 
-videosRouter.post('/', titleValidation, authorValidation, availableResolutionsValidation, expressValidator, async (req:Request, res:Response)=>{
+videosRouter.post('/', titleVideoValidation, authorVideoValidation, availableResolutionsValidation, expressValidator, async (req:Request, res:Response)=>{
     const title = req.body.title
     const author = req.body.author
     const availableResolutions = req.body.availableResolutions
@@ -33,7 +33,7 @@ videosRouter.get('/:id', async (req:Request, res:Response)=>{
     res.status(200).send(getVideoById)
 })
 
-videosRouter.put('/:id', titleValidation, authorValidation, availableResolutionsValidation,
+videosRouter.put('/:id', titleVideoValidation, authorVideoValidation, availableResolutionsValidation,
     minAgeRestrictionValidation, canBeDownloadedValidation, publicationDateValidation, expressValidator, async (req:Request, res:Response)=>{
     const title = req.body.title
     const author = req.body.author

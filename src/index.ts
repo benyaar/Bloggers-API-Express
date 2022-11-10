@@ -5,6 +5,7 @@ import cors from "cors"
 import {runDB} from "./repository/db";
 import {deleteDataRouter} from "./router/deleteDataRouter";
 import {bloggersRouter} from "./router/bloggersRouter";
+import {postsRouter} from "./router/postsRouter";
 
 
 const app = express()
@@ -15,6 +16,7 @@ app.use(cors())
 app.use("/videos", videosRouter)
 app.use("/testing", deleteDataRouter)
 app.use("/blogs", bloggersRouter)
+app.use("/posts", postsRouter)
 
 const startApp = async ()=>{
     await runDB()

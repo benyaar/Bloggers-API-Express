@@ -1,5 +1,5 @@
 import {MongoClient} from "mongodb"
-import {BlogDBType, VideoDBType} from "../types/types";
+import {BlogDBType, PostDBType, VideoDBType} from "../types/types";
 
 
 
@@ -19,3 +19,4 @@ export async function runDB() {
 const db = client.db("backSamurai")
 export const videosCollection = db.collection<VideoDBType>("videos")
 export const bloggersCollection = db.collection<BlogDBType>("blogs")
+export const postsCollection = db.collection<PostDBType>("posts")
