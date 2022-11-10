@@ -1,9 +1,11 @@
-import {videosRepository} from "./videosRepository";
-import {videosCollection} from "./db";
+
+import {bloggersCollection, postsCollection, videosCollection} from "./db";
 
 export const deleteDataRepository = {
     async deleteData(){
-        const deleteDataVideo = await videosCollection.deleteMany({})
-        return deleteDataVideo.deletedCount === 1
+       await videosCollection.deleteMany({})
+        await bloggersCollection.deleteMany({})
+         await postsCollection.deleteMany({})
+        return true
     }
 }
