@@ -1,6 +1,7 @@
 import {BlogDBType} from "../types/types";
 import {bloggersRepository} from "../repository/bloggersRepository";
 import {ObjectId} from "mongodb";
+import {postsService} from "./postsService";
 
 export const bloggersService = {
    async createNewBlog (name: string, youtubeUrl: string) {
@@ -19,7 +20,10 @@ export const bloggersService = {
     },
     async deleteBlog(blogId: string){
        return bloggersRepository.deleteBlog(blogId)
-    }
+    },
+    async createNewBlogPosts (title: string, shortDescription: string, content: string, findBlog: BlogDBType){
+       return postsService.createNewPost(title, shortDescription, content, findBlog)
 
+    },
 
 }

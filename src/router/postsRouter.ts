@@ -38,7 +38,13 @@ postsRouter.post("/", basicAuthMiddleware, blogIdValidation, titlePostValidation
     res.status(201).send(createNewPostCopy)
 })
 postsRouter.get("/", async (req:Request, res:Response) =>{
-    const findPosts = await queryRepository.getAllPosts()
+    const searchNameTerm = String(req.query.searchNameTerm)
+    const pageNumber = Number(req.query.pageNumber) || 1
+    const pageSize = Number(req.query.pageSize) || 10
+    const sortBy = String(req.query.sortBy) || "createdAt"
+    const sortDirection = String(req.query.sortDirection) || "desc"
+
+    const findPosts = await queryRepository.getAllPosts(searchNameTerm, pageNumber, pageSize, sortBy, sortDirection)
     res.status(200).send(findPosts)
 
 })
