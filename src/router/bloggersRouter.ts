@@ -73,7 +73,9 @@ bloggersRouter.post('/:id/posts',basicAuthMiddleware, titlePostValidation, short
     if(!findBlog) return res.sendStatus(404)
 
    const newCreatePost = await bloggersService.createNewBlogPosts(title, shortDescription, content, findBlog)
-    res.status(201).send(newCreatePost)
+    const {_id, ...newCreatePostCopy} = newCreatePost
+
+    res.status(201).send(newCreatePostCopy)
 })
 
 bloggersRouter.get('/:id/posts', async (req:Request, res:Response) => {
