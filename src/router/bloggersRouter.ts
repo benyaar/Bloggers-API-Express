@@ -4,12 +4,11 @@ import {queryRepository} from "../queryRepository/queryRepository";
 import {
     contentValidation,
     expressValidator,
-    nameBlogValidation, shortDescriptionPostValidation,
+    nameBlogValidation, paginationValidation, shortDescriptionPostValidation,
     titlePostValidation,
     youtubeUrlValidation
 } from "../middleware/expressValidator";
 import {basicAuthMiddleware} from "../middleware/basicAuthMiddleware";
-
 
 
 export const bloggersRouter = Router({})
@@ -24,15 +23,21 @@ bloggersRouter.post("/", basicAuthMiddleware, nameBlogValidation, youtubeUrlVali
     res.status(201).send(createNewBlogCopy)
 })
 
-bloggersRouter.get("/", async (req:Request, res:Response) => {
-    const searchNameTerm = String(req.query.searchNameTerm)
-    const pageNumber = Number(req.query.pageNumber) || 1
-    const pageSize = Number(req.query.pageSize) || 10
-    const sortBy = String(req.query.sortBy) || "createdAt"
-    const sortDirection = String(req.query.sortDirection) || "desc"
+bloggersRouter.get("/", paginationValidation, async (req:Request, res:Response) => {
+    let searchNameTerm: any = req.query.searchNameTerm
+    let pageNumber: any = req.query.pageNumber
+    let pageSize: any = req.query.pageSize
+    let sortBy: any = req.query.sortBy
+    let sortDirection: any = req.query.sortDirection
+    if (sortDirection !== ('asc' || 'desc')) sortDirection = 'desc'
+    console.log(`searchNameTerm: '${searchNameTerm}'`)
+    console.log(`pageNumber: '${pageNumber}'`)
+    console.log(`pageSize: '${pageSize}'`)
+    console.log(`sortBy: '${sortBy}'`)
+    console.log(`sortDirection: '${sortDirection}'`)
 
 
-    const getAllBlogs = await queryRepository.getAllBlogs(searchNameTerm, pageNumber, pageSize, sortBy, sortDirection)
+    const getAllBlogs = await queryRepository.getAllBlogs(searchNameTerm, pageNumber, pageSize, sortBy, sortDirection )
     res.status(200).send(getAllBlogs)
 })
 
@@ -42,6 +47,7 @@ bloggersRouter.get('/:id', async (req:Request, res:Response)=>{
     if(!getBlogById) return  res.sendStatus(404)
     res.status(200).send(getBlogById)
 })
+
 
 bloggersRouter.put('/:id', basicAuthMiddleware, nameBlogValidation, youtubeUrlValidation, expressValidator, async (req:Request, res:Response)=>{
         const name = req.body.name
@@ -80,7 +86,7 @@ bloggersRouter.post('/:id/posts',basicAuthMiddleware, titlePostValidation, short
 
 bloggersRouter.get('/:id/posts', async (req:Request, res:Response) => {
     const blogId = req.params.id
-    const searchNameTerm = String(req.query.searchNameTerm)
+    const searchNameTerm = String(req.query.searchNameTerm) || ""
     const pageNumber = Number(req.query.pageNumber) || 1
     const pageSize = Number(req.query.pageSize) || 10
     const sortBy = String(req.query.sortBy) || "createdAt"

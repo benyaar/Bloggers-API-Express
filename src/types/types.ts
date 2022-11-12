@@ -1,4 +1,4 @@
-import {ObjectId} from "mongodb";
+import {ObjectId, WithoutId} from "mongodb";
 
 export type VideoDBType = {
     id: number,
@@ -12,6 +12,7 @@ export type VideoDBType = {
     _id: ObjectId
 }
 
+
 export type BlogDBType = {
     _id: ObjectId,
     id: string,
@@ -19,6 +20,9 @@ export type BlogDBType = {
     youtubeUrl: string,
     createdAt: Date,
 }
+
+export type BlogViewModelType = WithoutId<BlogDBType>
+
 export type PostDBType = {
     _id: ObjectId,
     id: string,
@@ -30,4 +34,14 @@ export type PostDBType = {
     createdAt: Date,
 }
 
+export type PostViewModelType = WithoutId<PostDBType>
 
+export type PaginationItemsType =  BlogViewModelType[] | PostViewModelType[]
+
+export type PaginationType = {
+    pagesCount: number
+    page: number,
+    pageSize: number,
+    totalCount: number,
+    items: PaginationItemsType
+}

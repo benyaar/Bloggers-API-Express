@@ -1,6 +1,17 @@
 import {NextFunction, Request, Response} from "express";
-import {body, validationResult} from 'express-validator'
+import {body, query, validationResult} from 'express-validator'
 import {queryRepository} from "../queryRepository/queryRepository";
+
+export const expressValidator = (req:Request, res:Response, next:NextFunction) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errorsMessages: errors.array({onlyFirstError: true}).map( e => {
+                return {message: e.msg, field: e.param}
+
+            }) });
+    }
+    next()
+}
 
 export const titleVideoValidation = body('title').trim().isLength({min:1, max: 40})
 export const authorVideoValidation = body('author').trim().isLength({min:1, max: 20})
@@ -17,16 +28,14 @@ export const blogIdValidation = body('blogId').custom(async (value) => {
     if(!blogId)  throw new Error('Password confirmation does not match password')
     })
 
-export const expressValidator = (req:Request, res:Response, next:NextFunction) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(400).json({ errorsMessages: errors.array({onlyFirstError: true}).map( e => {
-               return {message: e.msg, field: e.param}
+const searchNameTermValidation = query('searchNameTerm').optional(false).trim().default('')
+const pageNumberValidation = query('pageNumber').toInt(10).default(1)
+const pageSizeValidation = query('pageSize').toInt(10).default(10)
+const sortByValidation = query('sortBy').optional(false).trim().default('createdAt')
+const sortDirectionValidation = query('sortDirection').optional(false).trim().default('desc')
 
-            }) });
-    }
-    next()
-}
+export const paginationValidation = [searchNameTermValidation, pageNumberValidation, pageSizeValidation, sortByValidation, sortDirectionValidation, expressValidator]
+
 
 export const availableResolutionsValidation = (req:Request, res:Response, next:NextFunction) => {
     const availableResolutions = req.body.availableResolutions

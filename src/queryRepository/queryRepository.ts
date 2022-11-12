@@ -1,4 +1,5 @@
 import {bloggersCollection, postsCollection, videosCollection} from "../repository/db";
+import {paginationResult} from "../helpers/pagination";
 
 
 const options = {
@@ -15,23 +16,19 @@ export const queryRepository = {
     async getVideoById(id: number) {
         return videosCollection.findOne({id}, options)
     },
-    async getAllBlogs (searchNameTerm: string, pageNumber:number, pageSize:number, sortBy:string, sortDirection:string) {
+    async getAllBlogs (searchNameTerm: string, pageNumber:number, pageSize:number, sortBy:any, sortDirection: any) {
 
        const findAndSortedBlogs =  await bloggersCollection
            .find({name: {$regex: searchNameTerm}}, options)
-           .sort(JSON.parse(sortBy),JSON.parse(sortDirection))
+           .sort(sortBy, sortDirection)
            .skip((pageNumber - 1) * pageSize)
            .limit(pageSize)
            .toArray()
+
         const getCountBlogs = await bloggersCollection.countDocuments()
-        return {
-            "pagesCount": Math.ceil(getCountBlogs/pageSize),
-            "page": pageNumber,
-            "pageSize": pageSize,
-            "totalCount": getCountBlogs,
-            "items": findAndSortedBlogs
-        }
+        return paginationResult(pageNumber, pageSize, getCountBlogs, findAndSortedBlogs)
     },
+
     async getBlogById(id: string) {
         return bloggersCollection.findOne({id}, options)
     },
@@ -43,32 +40,21 @@ export const queryRepository = {
             .limit(pageSize)
             .toArray()
         const getCountPosts = await postsCollection.countDocuments()
-        return {
-            "pagesCount": Math.ceil(getCountPosts/pageSize),
-            "page": pageNumber,
-            "pageSize": pageSize,
-            "totalCount": getCountPosts,
-            "items": findAndSortedPosts
-        }
+        return paginationResult(pageNumber, pageSize, getCountPosts, findAndSortedPosts)
 
     },
     async getPostById (id:string) {
         return postsCollection.findOne({id}, options)
     },
-    async findBlogPosts (id:string, searchNameTerm: string, pageNumber:number, pageSize:number, sortBy:string, sortDirection:string  ) {
-        const findAndSortedPosts =  await postsCollection
-            .find({name: {$regex: searchNameTerm}, blogId:id}, options)
-            .sort(JSON.parse(sortBy),JSON.parse(sortDirection))
+    async findBlogPosts (id:string, searchNameTerm: string, pageNumber:number, pageSize:number, sortBy:string, sortDirection:any  ) {
+        const findAndSortedPosts = await postsCollection
+            .find({name: {$regex: searchNameTerm}, blogId: id}, options)
+            .sort({[sortBy]: sortDirection})
             .skip((pageNumber - 1) * pageSize)
             .limit(pageSize)
             .toArray()
         const getCountPosts = await postsCollection.countDocuments()
-        return {
-            "pagesCount": Math.ceil(getCountPosts/pageSize),
-            "page": pageNumber,
-            "pageSize": pageSize,
-            "totalCount": getCountPosts,
-            "items": findAndSortedPosts
-        }
+        return paginationResult(pageNumber, pageSize, getCountPosts, findAndSortedPosts)
     }
+
 }
