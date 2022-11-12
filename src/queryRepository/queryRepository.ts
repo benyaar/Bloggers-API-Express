@@ -48,7 +48,7 @@ export const queryRepository = {
     },
     async findBlogPosts (id:string, searchNameTerm: string, pageNumber:number, pageSize:number, sortBy:any, sortDirection:any  ) {
         const findAndSortedPosts = await postsCollection
-            .find({name: {$regex: searchNameTerm}, blogId: id}, options)
+            .find({title: {$regex: searchNameTerm}, blogId: id}, options)
             .sort(sortBy, sortDirection)
             .skip((pageNumber - 1) * pageSize)
             .limit(pageSize)
