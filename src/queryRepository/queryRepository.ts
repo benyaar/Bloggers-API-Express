@@ -25,7 +25,7 @@ export const queryRepository = {
            .limit(pageSize)
            .toArray()
 
-        const getCountBlogs = await bloggersCollection.countDocuments({ $regex : searchNameTerm , $options : "i"})
+        const getCountBlogs = await bloggersCollection.countDocuments({name: { $regex : searchNameTerm , $options : "i"}})
         return paginationResult(pageNumber, pageSize, getCountBlogs, findAndSortedBlogs)
     },
 
