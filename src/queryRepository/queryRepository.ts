@@ -19,13 +19,13 @@ export const queryRepository = {
     async getAllBlogs (searchNameTerm: string, pageNumber:number, pageSize:number, sortBy:any, sortDirection: any) {
 
        const findAndSortedBlogs =  await bloggersCollection
-           .find({name: {$regex: searchNameTerm}}, options)
+           .find({name: { $regex : searchNameTerm , $options : "i"}}, options)
            .sort(sortBy, sortDirection)
            .skip((pageNumber - 1) * pageSize)
            .limit(pageSize)
            .toArray()
 
-        const getCountBlogs = await bloggersCollection.countDocuments()
+        const getCountBlogs = await bloggersCollection.countDocuments({ $regex : searchNameTerm , $options : "i"})
         return paginationResult(pageNumber, pageSize, getCountBlogs, findAndSortedBlogs)
     },
 
