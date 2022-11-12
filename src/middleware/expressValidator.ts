@@ -28,7 +28,7 @@ export const blogIdValidation = body('blogId').custom(async (value) => {
     if(!blogId)  throw new Error('Password confirmation does not match password')
     })
 
-const searchNameTermValidation = query('searchNameTerm').optional(false).trim().default('')
+const searchNameTermValidation = query('searchNameTerm').toLowerCase().optional(false).trim().default('')
 const pageNumberValidation = query('pageNumber').toInt(10).default(1)
 const pageSizeValidation = query('pageSize').toInt(10).default(10)
 const sortByValidation = query('sortBy').optional(false).trim().default('createdAt')

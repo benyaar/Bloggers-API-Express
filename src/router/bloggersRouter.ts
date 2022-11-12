@@ -93,6 +93,7 @@ bloggersRouter.get('/:id/posts', paginationValidation, async (req:Request, res:R
     let sortDirection: any = req.query.sortDirection
     if (sortDirection !== ('asc' || 'desc')) sortDirection = 'desc'
 
+
     const findBlog = await queryRepository.getBlogById(blogId)
     if(!findBlog) return res.sendStatus(404)
 
