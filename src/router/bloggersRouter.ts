@@ -96,6 +96,6 @@ bloggersRouter.get('/:id/posts', paginationValidation, async (req:Request, res:R
     const findBlog = await queryRepository.getBlogById(blogId)
     if(!findBlog) return res.sendStatus(404)
 
-    const findBlogPosts = queryRepository.findBlogPosts(blogId, searchNameTerm, pageNumber, pageSize, sortBy, sortDirection)
+    const findBlogPosts = await queryRepository.findBlogPosts(blogId, searchNameTerm, pageNumber, pageSize, sortBy, sortDirection)
     res.status(200).send(findBlogPosts)
 })
