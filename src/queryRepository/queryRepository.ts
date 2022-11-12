@@ -53,7 +53,7 @@ export const queryRepository = {
             .skip((pageNumber - 1) * pageSize)
             .limit(pageSize)
             .toArray()
-        const getCountPosts = await postsCollection.countDocuments()
+        const getCountPosts = await postsCollection.countDocuments({blogId:id})
         return paginationResult(pageNumber, pageSize, getCountPosts, findAndSortedPosts)
     }
 
