@@ -5,7 +5,7 @@ import {basicAuthMiddleware} from "../middleware/basicAuthMiddleware";
 import {
     blogIdValidation,
     contentValidation,
-    expressValidator,
+    expressValidator, paginationValidation,
     shortDescriptionPostValidation,
     titlePostValidation
 } from "../middleware/expressValidator";
@@ -37,12 +37,13 @@ postsRouter.post("/", basicAuthMiddleware, blogIdValidation, titlePostValidation
     const {_id, ...createNewPostCopy} = createNewPost
     res.status(201).send(createNewPostCopy)
 })
-postsRouter.get("/", async (req:Request, res:Response) =>{
-    const searchNameTerm = String(req.query.searchNameTerm)
-    const pageNumber = Number(req.query.pageNumber) || 1
-    const pageSize = Number(req.query.pageSize) || 10
-    const sortBy = String(req.query.sortBy) || "createdAt"
-    const sortDirection = String(req.query.sortDirection) || "desc"
+postsRouter.get("/", paginationValidation, async (req:Request, res:Response) =>{
+    const searchNameTerm:any = req.query.searchNameTerm
+    const pageNumber:any = req.query.pageNumber
+    const pageSize:any = req.query.pageSize
+    const sortBy:any = req.query.sortBy
+    let sortDirection = req.query.sortDirection
+    if (sortDirection !== ('asc' || 'desc')) sortDirection = 'desc'
 
     const findPosts = await queryRepository.getAllPosts(searchNameTerm, pageNumber, pageSize, sortBy, sortDirection)
     res.status(200).send(findPosts)

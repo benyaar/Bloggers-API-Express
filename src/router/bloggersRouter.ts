@@ -84,13 +84,14 @@ bloggersRouter.post('/:id/posts',basicAuthMiddleware, titlePostValidation, short
     res.status(201).send(newCreatePostCopy)
 })
 
-bloggersRouter.get('/:id/posts', async (req:Request, res:Response) => {
+bloggersRouter.get('/:id/posts', paginationValidation, async (req:Request, res:Response) => {
     const blogId = req.params.id
-    const searchNameTerm = String(req.query.searchNameTerm) || ""
-    const pageNumber = Number(req.query.pageNumber) || 1
-    const pageSize = Number(req.query.pageSize) || 10
-    const sortBy = String(req.query.sortBy) || "createdAt"
-    const sortDirection = String(req.query.sortDirection) || "desc"
+    const searchNameTerm:any = req.query.searchNameTerm
+    const pageNumber:any = req.query.pageNumber
+    const pageSize:any = req.query.pageSize
+    const sortBy:any = req.query.sortBy
+    let sortDirection: any = req.query.sortDirection
+    if (sortDirection !== ('asc' || 'desc')) sortDirection = 'desc'
 
     const findBlog = await queryRepository.getBlogById(blogId)
     if(!findBlog) return res.sendStatus(404)

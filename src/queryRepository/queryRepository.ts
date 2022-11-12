@@ -32,10 +32,10 @@ export const queryRepository = {
     async getBlogById(id: string) {
         return bloggersCollection.findOne({id}, options)
     },
-    async getAllPosts (searchNameTerm: string, pageNumber:number, pageSize:number, sortBy:string, sortDirection:string) {
+    async getAllPosts (searchNameTerm: string, pageNumber:number, pageSize:number, sortBy:any, sortDirection:any) {
         const findAndSortedPosts =  await postsCollection
             .find({name: {$regex: searchNameTerm}}, options)
-            .sort(JSON.parse(sortBy),JSON.parse(sortDirection))
+            .sort(sortBy, sortDirection)
             .skip((pageNumber - 1) * pageSize)
             .limit(pageSize)
             .toArray()
@@ -46,10 +46,10 @@ export const queryRepository = {
     async getPostById (id:string) {
         return postsCollection.findOne({id}, options)
     },
-    async findBlogPosts (id:string, searchNameTerm: string, pageNumber:number, pageSize:number, sortBy:string, sortDirection:any  ) {
+    async findBlogPosts (id:string, searchNameTerm: string, pageNumber:number, pageSize:number, sortBy:any, sortDirection:any  ) {
         const findAndSortedPosts = await postsCollection
             .find({name: {$regex: searchNameTerm}, blogId: id}, options)
-            .sort({[sortBy]: sortDirection})
+            .sort(sortBy, sortDirection)
             .skip((pageNumber - 1) * pageSize)
             .limit(pageSize)
             .toArray()
