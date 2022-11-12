@@ -34,7 +34,7 @@ export const queryRepository = {
     },
     async getAllPosts (searchNameTerm: string, pageNumber:number, pageSize:number, sortBy:any, sortDirection:any) {
         const findAndSortedPosts =  await postsCollection
-            .find({name: {$regex: searchNameTerm}}, options)
+            .find({title: {$regex: searchNameTerm}}, options)
             .sort(sortBy, sortDirection)
             .skip((pageNumber - 1) * pageSize)
             .limit(pageSize)
@@ -56,5 +56,6 @@ export const queryRepository = {
         const getCountPosts = await postsCollection.countDocuments({blogId:id})
         return paginationResult(pageNumber, pageSize, getCountPosts, findAndSortedPosts)
     }
+
 
 }
