@@ -47,6 +47,7 @@ usersRouter.delete("/:id", basicAuthMiddleware, async (req:Request, res:Response
     const findUserById = await queryRepository.findUserById(userId)
     if(!findUserById) return res.sendStatus(404)
     await usersService.deleteUser(userId)
+    res.sendStatus(204)
 })
 
 
