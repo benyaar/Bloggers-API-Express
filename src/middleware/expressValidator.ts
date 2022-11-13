@@ -28,14 +28,21 @@ export const blogIdValidation = body('blogId').custom(async (value) => {
     if(!blogId)  throw new Error('Password confirmation does not match password')
     })
 
-const searchNameTermValidation = query('searchNameTerm').toLowerCase().optional(false).trim().default('')
+const searchNameTermValidation = query('searchNameTerm').optional(false).trim().default('')
 const pageNumberValidation = query('pageNumber').toInt(10).default(1)
 const pageSizeValidation = query('pageSize').toInt(10).default(10)
 const sortByValidation = query('sortBy').optional(false).trim().default('createdAt')
 const sortDirectionValidation = query('sortDirection').optional(false).trim().default('desc')
+const searchLoginTerm = query('searchLoginTerm').optional(false).trim().default('')
+const searchEmailTerm = query('searchEmailTerm').optional(false).trim().default('')
 
-export const paginationValidation = [searchNameTermValidation, pageNumberValidation, pageSizeValidation, sortByValidation, sortDirectionValidation, expressValidator]
+export const paginationValidation = [searchNameTermValidation, pageNumberValidation, pageSizeValidation, sortByValidation, sortDirectionValidation, searchLoginTerm, searchEmailTerm, expressValidator]
 
+const loginValidation = body('login').trim().isLength({min:3, max:10})
+const emailValidation = body('email').trim().isEmail()
+const passwordValidation = body('password').trim().isLength({min:6, max:20})
+
+export const registrationValidation = [loginValidation, emailValidation, passwordValidation, expressValidator]
 
 export const availableResolutionsValidation = (req:Request, res:Response, next:NextFunction) => {
     const availableResolutions = req.body.availableResolutions

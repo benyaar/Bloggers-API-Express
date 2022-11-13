@@ -30,12 +30,6 @@ bloggersRouter.get("/", paginationValidation, async (req:Request, res:Response) 
     let sortBy: any = req.query.sortBy
     let sortDirection: any = req.query.sortDirection
     if (sortDirection !== ('asc' || 'desc')) sortDirection = 'desc'
-    console.log(`searchNameTerm: '${searchNameTerm}'`)
-    console.log(`pageNumber: '${pageNumber}'`)
-    console.log(`pageSize: '${pageSize}'`)
-    console.log(`sortBy: '${sortBy}'`)
-    console.log(`sortDirection: '${sortDirection}'`)
-
 
     const getAllBlogs = await queryRepository.getAllBlogs(searchNameTerm, pageNumber, pageSize, sortBy, sortDirection )
     res.status(200).send(getAllBlogs)

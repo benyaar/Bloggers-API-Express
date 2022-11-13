@@ -1,4 +1,4 @@
-import {bloggersCollection, postsCollection, videosCollection} from "../repository/db";
+import {bloggersCollection, postsCollection, usersCollection, videosCollection} from "../repository/db";
 import {paginationResult} from "../helpers/pagination";
 
 
@@ -55,6 +55,21 @@ export const queryRepository = {
             .toArray()
         const getCountPosts = await postsCollection.countDocuments({ title: { $regex : searchNameTerm , $options : "i"}, blogId: id})
         return paginationResult(pageNumber, pageSize, getCountPosts, findAndSortedPosts)
+    },
+
+    async getAllUsers(pageNumber:number, pageSize:number, sortBy:any, sortDirection:any,
+                      searchLoginTerm:string, searchEmailTerm:string){
+        const findAndSortedUsers = await usersCollection
+            .find({ login: { $regex : searchLoginTerm , $options : "i"}, email: { $regex : searchEmailTerm , $options : "i"}})
+            .sort(sortBy, sortDirection)
+            .skip((pageNumber - 1) * pageSize)
+            .limit(pageSize)
+            .toArray()
+        const getCountUsers = await usersCollection.countDocuments({ login: { $regex : searchLoginTerm , $options : "i"}, email: { $regex : searchEmailTerm , $options : "i"}})
+        return paginationResult(pageNumber, pageSize, getCountUsers, findAndSortedUsers)
+    },
+    async findUserById (id: string){
+        return usersCollection.findOne({id})
     }
 
 
