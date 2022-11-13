@@ -8,6 +8,7 @@ import {bloggersRouter} from "./router/bloggersRouter";
 import {postsRouter} from "./router/postsRouter";
 import {usersRouter} from "./router/usersRouter";
 import {authRouter} from "./router/authRouter";
+import {commentsRouter} from "./router/commentsRouter";
 
 
 const app = express()
@@ -21,6 +22,8 @@ app.use("/blogs", bloggersRouter)
 app.use("/posts", postsRouter)
 app.use("/users", usersRouter)
 app.use("/auth", authRouter)
+app.use("/comments", commentsRouter)
+app.set('trust proxy', true)
 
 const startApp = async ()=>{
     await runDB()

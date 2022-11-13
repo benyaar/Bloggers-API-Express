@@ -44,7 +44,7 @@ export type PaginationType = {
     items: PaginationItemsType
 }
 
-export type PaginationItemsType =  BlogViewModelType[] | PostViewModelType[] | UserViewModalType[]
+export type PaginationItemsType =  BlogViewModelType[] | PostViewModelType[] | UserViewModalType[] | CommentViewModalType[]
 
 export type UserDBType = {
     _id: ObjectId,
@@ -59,4 +59,21 @@ export type UserViewModalType = {
     login: string,
     email: string,
     createdAt: Date,
+}
+
+export type CommentDBModalType = {
+    _id: ObjectId,
+    id: string,
+    content: string,
+    userId: string,
+    userLogin: string,
+    createdAt: Date,
+    postId: string
+}
+export type CommentViewModalType = {
+    id: string,
+    content: string,
+    userId: string,
+    userLogin: string,
+    createdAt: Date
 }

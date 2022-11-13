@@ -3,22 +3,26 @@ import {postsService} from "../domain/postsService";
 import {queryRepository} from "../queryRepository/queryRepository";
 import {basicAuthMiddleware} from "../middleware/basicAuthMiddleware";
 import {
-    blogIdValidation,
+    blogIdValidation, commentsContentValidation,
     contentValidation,
     expressValidator, paginationValidation,
     shortDescriptionPostValidation,
     titlePostValidation
 } from "../middleware/expressValidator";
+import {bearerAuthMiddleWare} from "../middleware/bearerAuthMiddleWare";
+import {commentsService} from "../domain/commentsService";
 
 
 export const postsRouter = Router({})
 
-postsRouter.post("/", basicAuthMiddleware, blogIdValidation, titlePostValidation, shortDescriptionPostValidation, contentValidation,
+postsRouter.post("/", bearerAuthMiddleWare, blogIdValidation, titlePostValidation, shortDescriptionPostValidation, contentValidation,
     expressValidator, async (req:Request, res:Response) =>{
     const title = req.body.title
     const shortDescription = req.body.shortDescription
     const content = req.body.content
     const blogId = req.body.blogId
+        const user = req.user?.login
+        console.log(user)
 
     const findBlogById = await queryRepository.getBlogById(blogId)
     if(!findBlogById){
@@ -76,4 +80,33 @@ postsRouter.delete("/:id", basicAuthMiddleware, async (req:Request, res:Response
     if(!findPostById) return res.sendStatus(404)
     await postsService.deletePost(postId)
     res.sendStatus(204)
+})
+
+postsRouter.post('/:id/comments', bearerAuthMiddleWare, commentsContentValidation, expressValidator, async (req:Request, res:Response) => {
+    const postId = req.params.id
+    const content = req.body.content
+    const user = req.user!
+
+    const findPostById = await queryRepository.getPostById(postId)
+    if(!findPostById) return res.sendStatus(404)
+    const createNewComment = await commentsService.createNewComments(content, user, postId)
+
+    res.status(201).send(createNewComment)
+
+})
+postsRouter.get('/:id/comments', paginationValidation, async (req:Request, res:Response) => {
+    const postId = req.params.id
+    const pageNumber:any = req.query.pageNumber
+    const pageSize:any = req.query.pageSize
+    const sortBy:any = req.query.sortBy
+    let sortDirection = req.query.sortDirection
+    if (sortDirection !== ('asc' || 'desc')) sortDirection = 'desc'
+
+    const findPostById = await queryRepository.getPostById(postId)
+    if(!findPostById) return res.sendStatus(404)
+
+    const findAllCommentsByPost = await queryRepository.findAllCommentsByPost(pageNumber,pageSize, sortBy, sortDirection, postId)
+
+    res.status(201).send(findAllCommentsByPost)
+
 })

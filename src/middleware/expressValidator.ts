@@ -44,6 +44,8 @@ const passwordValidation = body('password').trim().isLength({min:6, max:20})
 
 export const registrationValidation = [loginValidation, emailValidation, passwordValidation, expressValidator]
 
+export const commentsContentValidation = body("content").trim().isLength({min:20, max:300})
+
 export const availableResolutionsValidation = (req:Request, res:Response, next:NextFunction) => {
     const availableResolutions = req.body.availableResolutions
 

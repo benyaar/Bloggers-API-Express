@@ -10,5 +10,6 @@ authRouter.post('/login', paginationValidation, async (req:Request, res:Response
 
     const loginUser = await authService.loginUser(login, password)
     if(!loginUser) return res.sendStatus(401)
-    res.sendStatus(204)
+
+    res.status(200).send({'accessToken': loginUser})
 })

@@ -1,4 +1,10 @@
-import {bloggersCollection, postsCollection, usersCollection, videosCollection} from "../repository/db";
+import {
+    bloggersCollection,
+    commentsCollection,
+    postsCollection,
+    usersCollection,
+    videosCollection
+} from "../repository/db";
 import {paginationResult} from "../helpers/pagination";
 
 
@@ -6,7 +12,8 @@ import {paginationResult} from "../helpers/pagination";
 const options = {
     projection: {
         _id:0,
-        passwordHash: 0
+        passwordHash: 0,
+        postId: 0,
     }
 }
 
@@ -62,12 +69,12 @@ export const queryRepository = {
     async getAllUsers(pageNumber:number, pageSize:number, sortBy:any, sortDirection:any,
                       searchLoginTerm:string, searchEmailTerm:string){
         const findAndSortedUsers = await usersCollection
-            .find({ login: { $regex : searchLoginTerm , $options : "i"}, email: { $regex : searchEmailTerm , $options : "i"}}, options)
+            .find({$or : [{login: { $regex : searchLoginTerm , $options : "i"}}, {email: { $regex : searchEmailTerm , $options : "i"}}]}, options)
             .sort(sortBy, sortDirection)
             .skip((pageNumber - 1) * pageSize)
             .limit(pageSize)
             .toArray()
-        const getCountUsers = await usersCollection.countDocuments({ login: { $regex : searchLoginTerm , $options : "i"}, email: { $regex : searchEmailTerm , $options : "i"}})
+        const getCountUsers = await usersCollection.countDocuments({$or : [{login: { $regex : searchLoginTerm , $options : "i"}}, {email: { $regex : searchEmailTerm , $options : "i"}}]})
         return paginationResult(pageNumber, pageSize, getCountUsers, findAndSortedUsers)
     },
     async findUserById (id: string){
@@ -78,7 +85,19 @@ export const queryRepository = {
     },
     async findUserByLoginOrEmail(login:string, email: string){
         return usersCollection.findOne(({$or : [{login}, {email}]}))
+    },
+    async findAllCommentsByPost (pageNumber:number, pageSize:number, sortBy:any, sortDirection:any, postId: string){
+        const findAndSortedComments = await commentsCollection
+            .find({postId}, options)
+            .sort(sortBy, sortDirection)
+            .skip((pageNumber - 1) * pageSize)
+            .limit(pageSize)
+            .toArray()
+        const getCountUsers = await commentsCollection.countDocuments({postId})
+        return paginationResult(pageNumber, pageSize, getCountUsers, findAndSortedComments)
+    },
+    async getCommentById(id: string){
+        return commentsCollection.findOne({id})
     }
-
 
 }
