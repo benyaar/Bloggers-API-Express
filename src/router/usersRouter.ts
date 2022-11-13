@@ -14,6 +14,7 @@ usersRouter.post("/", basicAuthMiddleware, registrationValidation, async (req:Re
     const password = req.body.password
 
     const createNewUser = await usersService.createNewUser(login, email, password)
+    if(!createNewUser) return res.sendStatus(404)
     const userViewModal: UserViewModalType = {
         id: createNewUser.id,
         login:createNewUser.login,

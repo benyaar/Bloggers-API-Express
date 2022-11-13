@@ -2,9 +2,11 @@ import {bloggersCollection, postsCollection, usersCollection, videosCollection} 
 import {paginationResult} from "../helpers/pagination";
 
 
+
 const options = {
     projection: {
-        _id:0
+        _id:0,
+        passwordHash: 0
     }
 }
 
@@ -60,7 +62,7 @@ export const queryRepository = {
     async getAllUsers(pageNumber:number, pageSize:number, sortBy:any, sortDirection:any,
                       searchLoginTerm:string, searchEmailTerm:string){
         const findAndSortedUsers = await usersCollection
-            .find({ login: { $regex : searchLoginTerm , $options : "i"}, email: { $regex : searchEmailTerm , $options : "i"}})
+            .find({ login: { $regex : searchLoginTerm , $options : "i"}, email: { $regex : searchEmailTerm , $options : "i"}}, options)
             .sort(sortBy, sortDirection)
             .skip((pageNumber - 1) * pageSize)
             .limit(pageSize)
@@ -70,6 +72,12 @@ export const queryRepository = {
     },
     async findUserById (id: string){
         return usersCollection.findOne({id})
+    },
+    async findUserByLogin (login: string){
+        return usersCollection.findOne({login})
+    },
+    async findUserByLoginOrEmail(login:string, email: string){
+        return usersCollection.findOne(({$or : [{login}, {email}]}))
     }
 
 
