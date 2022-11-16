@@ -97,7 +97,7 @@ export const queryRepository = {
         return paginationResult(pageNumber, pageSize, getCountUsers, findAndSortedComments)
     },
     async getCommentById(id: string){
-        return commentsCollection.findOne({id})
+        return commentsCollection.findOne({id}, options)
     }
 
 }
