@@ -9,7 +9,8 @@ export const authService = {
         if(!findUserByLogin) return false
         const passwordSalt = findUserByLogin.passwordHash.slice(0,29)
         const passwordHash = await bcrypt.hash(password, passwordSalt)
-        await authRepository.loginUser(login, passwordHash)
+        const checkCredentials = await authRepository.loginUser(login, passwordHash)
+        if(!checkCredentials) return false
         return JWTService.createJWTToken(findUserByLogin)
     }
 }
