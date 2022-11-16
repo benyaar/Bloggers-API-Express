@@ -7,16 +7,16 @@ import {commentsService} from "../domain/commentsService";
 
 export const  commentsRouter = Router({})
 
-commentsRouter.get('/:id', async (req:Request, res:Response) => {
-    const commentId = req.params.id
+commentsRouter.get('/:commentId', async (req:Request, res:Response) => {
+    const commentId = req.params.commentId
     const getCommentById = await queryRepository.getCommentById(commentId)
     if(!getCommentById) return res.sendStatus(404)
     res.status(200).send(getCommentById)
 })
 
-commentsRouter.put('/:id',bearerAuthMiddleWare, contentValidation, expressValidator, async (req:Request, res:Response) => {
+commentsRouter.put('/:commentId',bearerAuthMiddleWare, contentValidation, expressValidator, async (req:Request, res:Response) => {
     const user = req.user!
-    const commentId = req.params.id
+    const commentId = req.params.commentId
     const content = req.body.content
     const getCommentById = await queryRepository.getCommentById(commentId)
     if(!getCommentById) return res.sendStatus(404)
@@ -27,9 +27,9 @@ commentsRouter.put('/:id',bearerAuthMiddleWare, contentValidation, expressValida
 
 })
 
-commentsRouter.delete('/:id',bearerAuthMiddleWare, async (req:Request, res:Response) => {
+commentsRouter.delete('/:commentId',bearerAuthMiddleWare, async (req:Request, res:Response) => {
     const user = req.user!
-    const commentId = req.params.id
+    const commentId = req.params.commentId
 
     const getCommentById = await queryRepository.getCommentById(commentId)
     if(!getCommentById) return res.sendStatus(404)
