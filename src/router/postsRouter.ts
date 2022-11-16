@@ -83,15 +83,16 @@ postsRouter.delete("/:id", basicAuthMiddleware, async (req:Request, res:Response
 })
 
 postsRouter.post('/:id/comments', bearerAuthMiddleWare, commentsContentValidation, expressValidator, async (req:Request, res:Response) => {
-    const postId = req.params.id
+    const post = req.params.id
     const content = req.body.content
     const user = req.user!
 
-    const findPostById = await queryRepository.getPostById(postId)
+    const findPostById = await queryRepository.getPostById(post)
     if(!findPostById) return res.sendStatus(404)
-    const createNewComment = await commentsService.createNewComments(content, user, postId)
+    const createNewComment = await commentsService.createNewComments(content, user, post)
+    const {_id, postId, ...newCommentCopy} = createNewComment
 
-    res.status(201).send(createNewComment)
+    res.status(201).send(newCommentCopy)
 
 })
 postsRouter.get('/:id/comments', paginationValidation, async (req:Request, res:Response) => {

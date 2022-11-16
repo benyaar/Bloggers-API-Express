@@ -12,8 +12,8 @@ import {paginationResult} from "../helpers/pagination";
 const options = {
     projection: {
         _id:0,
-        passwordHash: 0,
-        postId: 0,
+        passwordHash:0,
+        postId:0,
     }
 }
 
