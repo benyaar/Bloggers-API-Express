@@ -82,7 +82,7 @@ postsRouter.delete("/:id", basicAuthMiddleware, async (req:Request, res:Response
     res.sendStatus(204)
 })
 
-postsRouter.post('/:id/comments', bearerAuthMiddleWare, commentsContentValidation, expressValidator, async (req:Request, res:Response) => {
+postsRouter.post('/:id/comments', basicAuthMiddleware, commentsContentValidation, expressValidator, async (req:Request, res:Response) => {
     const postId = req.params.id
     const content = req.body.content
     const user = req.user!
