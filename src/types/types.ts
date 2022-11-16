@@ -77,3 +77,9 @@ export type CommentViewModalType = {
     userLogin: string,
     createdAt: Date
 }
+
+export type UserAboutInfoType = {
+    email: string,
+    login: string,
+    userId: string
+}

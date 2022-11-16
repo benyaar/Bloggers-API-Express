@@ -1,5 +1,5 @@
 import {ObjectId} from "mongodb";
-import {BlogDBType, PostDBType, UserDBType} from "../types/types";
+import {BlogDBType, PostDBType} from "../types/types";
 import {postsRepository} from "../repository/postsRepository";
 
 export const postsService = {
