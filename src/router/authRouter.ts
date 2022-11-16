@@ -12,9 +12,11 @@ authRouter.post('/login', loginInputValidation, async (req:Request, res:Response
     const password = req.body.password
 
     const loginUser = await authService.loginUser(login, password)
+    console.log(loginUser)
     if(!loginUser) return res.sendStatus(401)
 
-    res.status(200).send({'accessToken': loginUser})
+
+    res.status(204).send({'accessToken': loginUser})
 })
 authRouter.get('/me', bearerAuthMiddleWare, async (req:Request, res:Response) =>{
     const user = req.user!.id
