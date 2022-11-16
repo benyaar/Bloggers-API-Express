@@ -17,11 +17,11 @@ export const commentsService = {
         await commentsRepository.createNewComments(newComment)
         return newComment
     },
-    async updateComment (id: string, content: string){
+    async updateComment (id: string, content: string, user: UserDBType){
 
-        return commentsRepository.updateComment(id, content)
+        return commentsRepository.updateComment(id, content, user)
     },
-    async deleteComment (id: string){
-        return commentsRepository.deleteComment(id)
+    async deleteComment (id: string, user: UserDBType){
+        return commentsRepository.deleteComment(id, user)
     }
 }
