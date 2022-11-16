@@ -109,6 +109,6 @@ postsRouter.get('/:id/comments', paginationValidation, async (req:Request, res:R
     const findAllCommentsByPost = await queryRepository.findAllCommentsByPost(pageNumber,pageSize, sortBy, sortDirection, postId)
 
 
-    res.status(201).send(findAllCommentsByPost)
+    res.status(200).send(findAllCommentsByPost)
 
 })
