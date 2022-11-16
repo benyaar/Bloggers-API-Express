@@ -1,5 +1,5 @@
 import {Request, Response, Router} from "express";
-import {registrationValidation} from "../middleware/expressValidator";
+import {loginInputValidation } from "../middleware/expressValidator";
 import {authService} from "../domain/authService";
 import {bearerAuthMiddleWare} from "../middleware/bearerAuthMiddleWare";
 import {queryRepository} from "../queryRepository/queryRepository";
@@ -7,7 +7,7 @@ import {UserAboutInfoType} from "../types/types";
 
 export const authRouter = Router({})
 
-authRouter.post('/login', registrationValidation, async (req:Request, res:Response) =>{
+authRouter.post('/login', loginInputValidation, async (req:Request, res:Response) =>{
     const login = req.body.login
     const password = req.body.password
 

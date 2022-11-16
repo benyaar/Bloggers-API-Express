@@ -42,6 +42,7 @@ const loginValidation = body('login').trim().isLength({min:3, max:10})
 const emailValidation = body('email').trim().isEmail()
 const passwordValidation = body('password').trim().isLength({min:6, max:20})
 
+export const loginInputValidation = [loginValidation, passwordValidation, expressValidator]
 export const registrationValidation = [loginValidation, emailValidation, passwordValidation, expressValidator]
 
 export const commentsContentValidation = body("content").trim().isLength({min:20, max:300})
