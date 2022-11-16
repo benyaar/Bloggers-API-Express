@@ -21,7 +21,7 @@ authRouter.get('/me', bearerAuthMiddleWare, async (req:Request, res:Response) =>
     const user = req.user!.id
     const userInfo = await queryRepository.findUserById(user)
     if(!userInfo) return res.status(404)
-    const userAbout: UserAboutInfoType ={
+    const userAbout: UserAboutInfoType = {
         email: userInfo?.email,
         login: userInfo?.login,
         userId: userInfo?.id,
