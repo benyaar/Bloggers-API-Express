@@ -1,5 +1,12 @@
 
-import {bloggersCollection, commentsCollection, postsCollection, usersCollection, videosCollection} from "./db";
+import {
+    attemptsCollection,
+    bloggersCollection,
+    commentsCollection,
+    postsCollection,
+    usersCollection,
+    videosCollection
+} from "./db";
 
 export const deleteDataRepository = {
     async deleteData(){
@@ -8,6 +15,7 @@ export const deleteDataRepository = {
          await postsCollection.deleteMany({})
         await usersCollection.deleteMany({})
         await commentsCollection.deleteMany({})
+        await attemptsCollection.deleteMany({})
         return true
     }
 }

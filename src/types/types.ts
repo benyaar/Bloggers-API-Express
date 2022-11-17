@@ -53,6 +53,11 @@ export type UserDBType = {
     email: string,
     createdAt: Date,
     passwordHash: string
+    emailConfirmation: {
+        confirmationCode: string,
+        expirationDate: Date,
+        isConfirmed: boolean
+    }
 }
 export type UserViewModalType = {
     id: string,
@@ -82,4 +87,10 @@ export type UserAboutInfoType = {
     email: string,
     login: string,
     userId: string
+}
+
+export type AttemptsType = {
+    userIP: string,
+    url: string,
+    time: Date
 }

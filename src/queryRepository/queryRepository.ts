@@ -14,6 +14,7 @@ const options = {
         _id:0,
         passwordHash:0,
         postId:0,
+        emailConfirmation:0
     }
 }
 
@@ -98,6 +99,9 @@ export const queryRepository = {
     },
     async getCommentById(id: string){
         return commentsCollection.findOne({id}, options)
+    },
+    async findUserByCode(code:string){
+        return usersCollection.findOne({'emailConfirmation.confirmationCode':code})
     }
 
 }

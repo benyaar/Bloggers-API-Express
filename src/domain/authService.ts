@@ -12,5 +12,6 @@ export const authService = {
         const checkCredentials = await authRepository.loginUser(login, passwordHash)
         if(!checkCredentials) return false
         return JWTService.createJWTToken(findUserByLogin)
-    }
+    },
+
 }
