@@ -20,7 +20,7 @@ export const canBeDownloadedValidation = body('canBeDownloaded').trim().isBoolea
 export const publicationDateValidation = body("publicationDate").trim().matches("/(\\d{4}-[01]\\d-[0-3]\\dT[0-2]\\d:[0-5]\\d:[0-5]\\d\\.\\d+)|(\\d{4}-[01]\\d-[0-3]\\dT[0-2]\\d:[0-5]\\d:[0-5]\\d)|(\\d{4}-[01]\\d-[0-3]\\dT[0-2]\\d:[0-5]\\d)/")
 export const nameBlogValidation = body('name').trim().isLength({min:1, max: 15})
 export const descriptionBlogValidation = body('description').trim().isLength({min:1, max: 500})
-export const websiteUrlValidation = body('youtubeUrl').trim().isLength({min:1, max: 100}).isURL()
+export const websiteUrlValidation = body('websiteUrl').trim().isLength({min:1, max: 100}).isURL()
 
 export const blogValidation = [nameBlogValidation, descriptionBlogValidation, websiteUrlValidation, expressValidator]
 
