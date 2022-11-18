@@ -7,9 +7,6 @@ import {JWTRepository} from "../repository/JWTRepository";
 const JWT_SECRET = process.env.JWT_SECRET || "123"
 
 export const JWTService = {
-    async createJWTToken (user: UserDBType) {
-        return jwt.sign({userId: user.id}, JWT_SECRET, {expiresIn: '1h'})
-    },
     async getUseIdByToken (token:string){
         try{
             const result: any = jwt.verify(token, JWT_SECRET)
@@ -20,8 +17,8 @@ export const JWTService = {
         }
     },
     async createJWTPair (user: UserDBType){
-        const accessToken = jwt.sign({userId: user.id}, JWT_SECRET, {expiresIn: '10s'})
-        const refreshToken = jwt.sign({userId: user.id}, JWT_SECRET, {expiresIn: '20s'})
+        const accessToken = jwt.sign({userId: user.id}, JWT_SECRET, {expiresIn: '10'})
+        const refreshToken = jwt.sign({userId: user.id}, JWT_SECRET, {expiresIn: '20'})
         return {accessToken, refreshToken}
     },
     async updateorDeleteJWTTokenPair(refreshToken: string){
