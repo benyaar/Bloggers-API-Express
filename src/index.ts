@@ -9,6 +9,7 @@ import {postsRouter} from "./router/postsRouter";
 import {usersRouter} from "./router/usersRouter";
 import {authRouter} from "./router/authRouter";
 import {commentsRouter} from "./router/commentsRouter";
+import cookieParser from "cookie-parser";
 
 
 const app = express()
@@ -16,6 +17,7 @@ const port = process.env.PORT || 3000
 
 app.use(bodyParser.json())
 app.use(cors())
+app.use(cookieParser())
 app.use("/videos", videosRouter)
 app.use("/testing", deleteDataRouter)
 app.use("/blogs", bloggersRouter)

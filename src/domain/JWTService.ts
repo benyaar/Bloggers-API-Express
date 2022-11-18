@@ -17,8 +17,8 @@ export const JWTService = {
         }
     },
     async createJWTPair (user: UserDBType){
-        const accessToken = jwt.sign({userId: user.id}, JWT_SECRET, {expiresIn: 10})
-        const refreshToken = jwt.sign({userId: user.id}, JWT_SECRET, {expiresIn: 20})
+        const accessToken = jwt.sign({userId: user.id}, JWT_SECRET, {expiresIn: 3600})
+        const refreshToken = jwt.sign({userId: user.id}, JWT_SECRET, {expiresIn: 3600})
         return {accessToken, refreshToken}
     },
     async updateorDeleteJWTTokenPair(refreshToken: string){
