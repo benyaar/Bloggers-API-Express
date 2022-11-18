@@ -11,8 +11,11 @@ import add from 'date-fns/add'
 export const usersService = {
 
     async createNewUser(login:string, email:string, password: string){
-        const findUserByLoginOrEmail = await queryRepository.findUserByLoginOrEmail(login, email)
-        if(findUserByLoginOrEmail) return false
+        const findUserByLogin = await queryRepository.findUserByLogin(login)
+        if(findUserByLogin) return false
+        const findUserByEmail = await queryRepository.findUserByEmail(email)
+        if(findUserByEmail) return false
+
         const passwordSalt = await bcrypt.genSalt(10)
         const passwordHash = await bcrypt.hash(password, passwordSalt)
         const code = uuidv4()

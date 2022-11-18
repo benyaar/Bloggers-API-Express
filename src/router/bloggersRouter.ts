@@ -2,22 +2,23 @@ import {Router, Request, Response} from "express";
 import {bloggersService} from "../domain/bloggersService";
 import {queryRepository} from "../queryRepository/queryRepository";
 import {
+    blogValidation,
     contentValidation,
     expressValidator,
-    nameBlogValidation, paginationValidation, shortDescriptionPostValidation,
+     paginationValidation, shortDescriptionPostValidation,
     titlePostValidation,
-    youtubeUrlValidation
 } from "../middleware/expressValidator";
 import {basicAuthMiddleware} from "../middleware/basicAuthMiddleware";
 
 
 export const bloggersRouter = Router({})
 
-bloggersRouter.post("/", basicAuthMiddleware, nameBlogValidation, youtubeUrlValidation, expressValidator, async (req:Request, res:Response) => {
+bloggersRouter.post("/", basicAuthMiddleware, blogValidation, async (req:Request, res:Response) => {
     const name = req.body.name
-    const youtubeUrl = req.body.youtubeUrl
+    const description = req.body.description
+    const websiteUrl = req.body.websiteUrl
 
-    const createNewBlog = await bloggersService.createNewBlog(name, youtubeUrl)
+    const createNewBlog = await bloggersService.createNewBlog(name, description,websiteUrl)
 
     const {_id, ...createNewBlogCopy} = createNewBlog
     res.status(201).send(createNewBlogCopy)
@@ -43,14 +44,15 @@ bloggersRouter.get('/:id', async (req:Request, res:Response)=>{
 })
 
 
-bloggersRouter.put('/:id', basicAuthMiddleware, nameBlogValidation, youtubeUrlValidation, expressValidator, async (req:Request, res:Response)=>{
-        const name = req.body.name
-        const youtubeUrl = req.body.youtubeUrl
+bloggersRouter.put('/:id', basicAuthMiddleware, blogValidation, async (req:Request, res:Response)=>{
+    const name = req.body.name
+    const description = req.body.description
+    const websiteUrl = req.body.websiteUrl
 
         const blogId = req.params.id
         const getBlogById = await queryRepository.getBlogById(blogId)
         if(!getBlogById) return  res.sendStatus(404)
-        await bloggersService.updateBlog(blogId, name, youtubeUrl)
+        await bloggersService.updateBlog(blogId, name, description, websiteUrl)
 
         res.sendStatus(204)
     })

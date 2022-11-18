@@ -4,19 +4,20 @@ import {ObjectId} from "mongodb";
 import {postsService} from "./postsService";
 
 export const bloggersService = {
-   async createNewBlog (name: string, youtubeUrl: string) {
+   async createNewBlog (name: string, description: string, websiteUrl: string) {
         const newBlogger:BlogDBType = {
             _id: new ObjectId(),
             id: new ObjectId().toString(),
-            name: name,
-            youtubeUrl:youtubeUrl,
+            name,
+            description,
+            websiteUrl,
             createdAt: new Date()
         }
         await bloggersRepository.createNewBlog(newBlogger)
         return newBlogger
     },
-    async updateBlog(blogId:string, name: string, youtubeUrl:string){
-       return bloggersRepository.updateBlog(blogId, name, youtubeUrl)
+    async updateBlog(blogId:string, name: string, description:string, websiteUrl: string){
+       return bloggersRepository.updateBlog(blogId, name, description, websiteUrl)
     },
     async deleteBlog(blogId: string){
        return bloggersRepository.deleteBlog(blogId)

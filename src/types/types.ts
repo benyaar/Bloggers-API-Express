@@ -17,8 +17,10 @@ export type BlogDBType = {
     _id: ObjectId,
     id: string,
     name: string,
-    youtubeUrl: string,
+    description: string,
+    websiteUrl: string
     createdAt: Date,
+
 }
 
 export type BlogViewModelType = WithoutId<BlogDBType>

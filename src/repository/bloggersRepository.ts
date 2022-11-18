@@ -7,8 +7,8 @@ export const bloggersRepository = {
     async createNewBlog (newBlog: BlogDBType) {
         return bloggersCollection.insertOne(newBlog)
     },
-    async updateBlog(blogId: string, name: string, youtubeUrl: string){
-        const updateBlog = await bloggersCollection.updateOne({id: blogId}, {$set:{name: name, youtubeUrl: youtubeUrl}})
+    async updateBlog(blogId:string, name: string, description:string, websiteUrl: string){
+        const updateBlog = await bloggersCollection.updateOne({id: blogId}, {$set:{name, description, websiteUrl}})
         return updateBlog.matchedCount === 1
     },
     async deleteBlog(blogId: string){

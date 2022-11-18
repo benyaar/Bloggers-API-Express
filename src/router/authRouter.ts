@@ -2,7 +2,6 @@ import {Request, Response, Router} from "express";
 import {
     emailValidation,
     expressValidator,
-    loginInputValidation,
     registrationValidation
 } from "../middleware/expressValidator";
 import {authService} from "../domain/authService";
@@ -15,11 +14,11 @@ import {JWTService} from "../domain/JWTService";
 
 export const authRouter = Router({})
 
-authRouter.post('/login', loginInputValidation, attemptsMiddleware, async (req:Request, res:Response) =>{
-    const login = req.body.login
+authRouter.post('/login', attemptsMiddleware, async (req:Request, res:Response) =>{
+    const loginOrEmail = req.body.loginOrEmail
     const password = req.body.password
 
-    const loginUser = await authService.loginUser(login, password)
+    const loginUser = await authService.loginUser(loginOrEmail, password)
 
     if(!loginUser) return res.sendStatus(401)
     res.cookie('refreshToken', loginUser.refreshToken, {httpOnly:true, secure: true})
@@ -43,7 +42,7 @@ authRouter.post('/registration', registrationValidation, async (req: Request, re
     const password = req.body.password
     const email = req.body.email
 
-    const findUserBuLoginOrEmail = await queryRepository.findUserByLoginOrEmail(login, email)
+    const findUserBuLoginOrEmail = await queryRepository.findUserByLoginOrEmail(login)
     if(findUserBuLoginOrEmail?.login === login){
         return res.status(400).send({errorsMessages: [{message: 'Invalid login', field: "login"}]})
     }

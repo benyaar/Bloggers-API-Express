@@ -84,8 +84,8 @@ export const queryRepository = {
     async findUserByLogin (login: string){
         return usersCollection.findOne({login})
     },
-    async findUserByLoginOrEmail(login:string, email: string){
-        return usersCollection.findOne(({$or : [{login}, {email}]}))
+    async findUserByLoginOrEmail(loginOrEmail:string){
+        return usersCollection.findOne(({$or : [{login:loginOrEmail}, {email: loginOrEmail}]}))
     },
     async findAllCommentsByPost (pageNumber:number, pageSize:number, sortBy:any, sortDirection:any, postId: string){
         const findAndSortedComments = await commentsCollection

@@ -10,17 +10,16 @@ import {usersRepository} from "../repository/usersRepository";
 import {emailService} from "./emailService";
 
 export const authService = {
-    async loginUser (login: string, password: string) {
-        const findUserByLogin = await queryRepository.findUserByLogin(login)
+    async loginUser (loginOrEmail: string, password: string) {
+        const findUserByLogin = await queryRepository.findUserByLoginOrEmail(loginOrEmail)
         if(!findUserByLogin) return false
         const passwordSalt = findUserByLogin.passwordHash.slice(0,29)
         const passwordHash = await bcrypt.hash(password, passwordSalt)
-        const checkCredentials = await authRepository.loginUser(login, passwordHash)
+        const checkCredentials = await authRepository.loginUser(findUserByLogin.email, passwordHash)
         if(!checkCredentials) return false
         return JWTService.createJWTPair(checkCredentials)
 
 
-        //return JWTService.createJWTToken(findUserByLogin)
     },
     async resendingEmail(email: string, user: UserDBType){
         const newEmailConfirmation: UserDBType = {
