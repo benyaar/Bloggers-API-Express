@@ -17,8 +17,8 @@ export const JWTService = {
         }
     },
     async createJWTPair (user: UserDBType){
-        const accessToken = jwt.sign({userId: user.id}, JWT_SECRET, {expiresIn: 10})
-        const refreshToken = jwt.sign({userId: user.id}, JWT_SECRET, {expiresIn: 20})
+        const accessToken = jwt.sign({userId: user.id}, JWT_SECRET, {expiresIn: '10s'})
+        const refreshToken = jwt.sign({userId: user.id}, JWT_SECRET, {expiresIn: '20s'})
         return {accessToken, refreshToken}
     },
     async updateorDeleteJWTTokenPair(refreshToken: string){
@@ -36,8 +36,12 @@ export const JWTService = {
     async getTokenTime (refreshToken: string){
         try {
             const result: any = jwt.verify(refreshToken, JWT_SECRET)
-            if (result) return result.exp
-            return false
+            if (result) {
+                return result.exp
+            } else{
+                return false
+            }
+
         } catch (error){
             return false
         }
