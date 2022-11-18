@@ -44,7 +44,12 @@ authRouter.post('/registration', registrationValidation, async (req: Request, re
     const email = req.body.email
 
     const findUserBuLoginOrEmail = await queryRepository.findUserByLoginOrEmail(login, email)
-    if(findUserBuLoginOrEmail) return res.sendStatus(400)
+    if(findUserBuLoginOrEmail?.login === login){
+        return res.status(400).send({errorsMessages: [{message: 'Invalid login', field: "login"}]})
+    }
+    if(findUserBuLoginOrEmail?.email === email){
+        return res.status(400).send({errorsMessages: [{message: 'Invalid email', field: "email"}]})
+    }
 
     const createNewUser = await usersService.createNewUser(login, email, password)
     if(!createNewUser) return res.sendStatus(404)
