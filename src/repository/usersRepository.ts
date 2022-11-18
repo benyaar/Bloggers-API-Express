@@ -15,5 +15,9 @@ export const usersRepository = {
                     'emailConfirmation.expirationDate': user.emailConfirmation.expirationDate,
                     'emailConfirmation.isConfirmed': user.emailConfirmation.isConfirmed}})
         return updateUser.matchedCount===1
+    },
+    async updateUserConfirmation(id: string){
+        const updateUser = await usersCollection.updateOne({id},{$set: {'emailConfirmation.isConfirmed': true}})
+        return updateUser.matchedCount===1
     }
 }

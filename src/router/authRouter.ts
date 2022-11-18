@@ -44,7 +44,7 @@ authRouter.post('/registration', registrationValidation, async (req: Request, re
     const email = req.body.email
 
     const findUserBuLoginOrEmail = await queryRepository.findUserByLoginOrEmail(login, email)
-    if(findUserBuLoginOrEmail) return res.sendStatus(404)
+    if(findUserBuLoginOrEmail) return res.sendStatus(400)
 
     const createNewUser = await usersService.createNewUser(login, email, password)
     if(!createNewUser) return res.sendStatus(404)
@@ -55,6 +55,8 @@ authRouter.post('/registration-confirmation', async (req:Request, res:Response)=
     const confirmationCode = req.body.code
     const findUserByCode = await queryRepository.findUserByCode(confirmationCode)
     if(!findUserByCode) return res.sendStatus(404)
+    await authService.confirmEmail(confirmationCode, findUserByCode)
+    res.sendStatus(204)
 })
 
 authRouter.post('/registration-email-resending', attemptsMiddleware, emailValidation, expressValidator, async(req:Request, res:Response) =>{

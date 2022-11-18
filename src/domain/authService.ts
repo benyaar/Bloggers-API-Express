@@ -7,6 +7,7 @@ import {ObjectId} from "mongodb";
 import {v4 as uuidv4} from "uuid"
 import add from "date-fns/add";
 import {usersRepository} from "../repository/usersRepository";
+import {emailService} from "./emailService";
 
 export const authService = {
     async loginUser (login: string, password: string) {
@@ -36,6 +37,16 @@ export const authService = {
             }
         }
         await usersRepository.updateUserConfirmationData(newEmailConfirmation)
+        await emailService.sendEmail(email, newEmailConfirmation.emailConfirmation.confirmationCode)
+        return
+    },
+    async confirmEmail(code: string, user: UserDBType){
+        if(user.emailConfirmation.expirationDate > new Date() && !user.emailConfirmation.isConfirmed){
+            const result = usersRepository.updateUserConfirmation(user.id)
+            if (!result) return false
+            await emailService.resendEmail(user.email, "Your email was confirmed", "Hello! Your email was confirmed")
+            return true
+        }
     }
 
 }
