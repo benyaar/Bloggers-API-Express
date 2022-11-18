@@ -1,8 +1,8 @@
 import {usersCollection} from "./db";
 
 export const authRepository = {
-    async loginUser (login:string, passwordHash:string){
-        return usersCollection.findOne({login, passwordHash})
+    async loginUser (loginOrEmail:string, passwordHash:string){
+        return usersCollection.findOne({$or : [{login:loginOrEmail}, {email: loginOrEmail}], passwordHash})
 
     }
 }
