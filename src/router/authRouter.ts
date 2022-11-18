@@ -1,5 +1,10 @@
 import {Request, Response, Router} from "express";
-import {loginInputValidation, registrationValidation} from "../middleware/expressValidator";
+import {
+    emailValidation,
+    expressValidator,
+    loginInputValidation,
+    registrationValidation
+} from "../middleware/expressValidator";
 import {authService} from "../domain/authService";
 import {bearerAuthMiddleWare} from "../middleware/bearerAuthMiddleWare";
 import {queryRepository} from "../queryRepository/queryRepository";
@@ -47,7 +52,19 @@ authRouter.post('/registration', registrationValidation, async (req: Request, re
 })
 
 authRouter.post('/registration-confirmation', async (req:Request, res:Response)=>{
-    const confirmaionCode = req.body.code
-    const findUserByCode = await queryRepository.findUserByCode(confirmaionCode)
+    const confirmationCode = req.body.code
+    const findUserByCode = await queryRepository.findUserByCode(confirmationCode)
     if(!findUserByCode) return res.sendStatus(404)
+})
+
+authRouter.post('/registration-email-resending', attemptsMiddleware, emailValidation, expressValidator, async(req:Request, res:Response) =>{
+    const email = req.body.email
+    const findUserByEmail = await queryRepository.findUserByEmail(email)
+    if(findUserByEmail === null || !findUserByEmail || findUserByEmail.emailConfirmation.isConfirmed){
+        return res.status(400).send({errorsMessages: [{message: "ErrorMessage", field: "email"}]})
+    } else {
+        await authService.resendingEmail(email, findUserByEmail)
+        return res.sendStatus(204)
+    }
+
 })

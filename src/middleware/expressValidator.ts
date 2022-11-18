@@ -39,7 +39,7 @@ const searchEmailTerm = query('searchEmailTerm').optional(false).trim().default(
 export const paginationValidation = [searchNameTermValidation, pageNumberValidation, pageSizeValidation, sortByValidation, sortDirectionValidation, searchLoginTerm, searchEmailTerm, expressValidator]
 
 const loginValidation = body('login').trim().isLength({min:3, max:10})
-const emailValidation = body('email').trim().isEmail()
+export const emailValidation = body('email').trim().isEmail()
 const passwordValidation = body('password').trim().isLength({min:6, max:20})
 
 export const loginInputValidation = [loginValidation, passwordValidation, expressValidator]

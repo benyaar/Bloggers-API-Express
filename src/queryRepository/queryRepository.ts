@@ -102,6 +102,9 @@ export const queryRepository = {
     },
     async findUserByCode(code:string){
         return usersCollection.findOne({'emailConfirmation.confirmationCode':code})
+    },
+    async findUserByEmail(email:string){
+        return usersCollection.findOne({email})
     }
 
 }

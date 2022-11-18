@@ -7,6 +7,7 @@ import {emailService} from "./emailService";
 import  {v4 as uuidv4} from 'uuid'
 import add from 'date-fns/add'
 
+
 export const usersService = {
 
     async createNewUser(login:string, email:string, password: string){
@@ -38,5 +39,6 @@ export const usersService = {
     },
     async deleteUser (id: string){
         return usersRepository.deleteUser(id)
-    }
+    },
+
 }
