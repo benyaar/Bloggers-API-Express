@@ -57,9 +57,11 @@ authRouter.post('/registration', registrationValidation, async (req: Request, re
 })
 
 authRouter.post('/registration-confirmation', async (req:Request, res:Response)=>{
+    const error = { errorsMessages: [{ message: 'code', field: "code" }]}
     const confirmationCode = req.body.code
     const findUserByCode = await queryRepository.findUserByCode(confirmationCode)
-    if(!findUserByCode) return res.sendStatus(404)
+    if(!findUserByCode) return res.status(400).send(error)
+    if(findUserByCode.emailConfirmation.isConfirmed)  return res.status(400).send(error)
     await authService.confirmEmail(confirmationCode, findUserByCode)
     res.sendStatus(204)
 })
