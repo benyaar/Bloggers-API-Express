@@ -81,8 +81,17 @@ authRouter.post('/registration-email-resending', attemptsMiddleware, emailValida
 authRouter.post('/refresh-token', async (req:Request, res: Response)=>{
     const refreshToken = req.cookies.refreshToken
     if(!refreshToken) return res.sendStatus(401)
-    const updateTokenPair = await JWTService.updateJWTTokenPair(refreshToken)
+    const updateTokenPair = await JWTService.updateorDeleteJWTTokenPair(refreshToken)
     if(!updateTokenPair) return res.sendStatus(401)
-    res.cookie('refreshToken', updateTokenPair.refreshToken, {httpOnly:true, secure: true})
-    res.status(200).send({accessToken: updateTokenPair.accessToken})
+    const createNewTokenPair = await JWTService.createJWTPair(updateTokenPair)
+    res.cookie('refreshToken', createNewTokenPair.refreshToken, {httpOnly:true, secure: true})
+    res.status(200).send({accessToken: createNewTokenPair.accessToken})
+})
+
+authRouter.post('/logout', async (req:Request, res: Response)=>{
+    const refreshToken = req.cookies.refreshToken
+    if(!refreshToken) return res.sendStatus(401)
+    const deleteTokenPair = await JWTService.updateorDeleteJWTTokenPair(refreshToken)
+    if(!deleteTokenPair) return res.sendStatus(401)
+    res.sendStatus(204)
 })

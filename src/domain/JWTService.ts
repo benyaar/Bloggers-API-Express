@@ -24,7 +24,7 @@ export const JWTService = {
         const refreshToken = jwt.sign({userId: user.id}, JWT_SECRET, {expiresIn: '20s'})
         return {accessToken, refreshToken}
     },
-    async updateJWTTokenPair(refreshToken: string){
+    async updateorDeleteJWTTokenPair(refreshToken: string){
         const tokenTime = await JWTService.getTokenTime(refreshToken)
         if(!tokenTime) return false
         const findTokenInBlackList = await queryRepository.findTokenInBlackList(refreshToken)
@@ -34,7 +34,7 @@ export const JWTService = {
         const findUserById = await queryRepository.findUserById(findUserIdByToken)
         if(!findUserById) return false
         await JWTRepository.addRefreshTokenInBlackList({refreshToken})
-        return await this.createJWTPair(findUserById)
+        return findUserById
     },
     async getTokenTime (refreshToken: string){
         try {
