@@ -17,7 +17,10 @@ export const authService = {
         const passwordHash = await bcrypt.hash(password, passwordSalt)
         const checkCredentials = await authRepository.loginUser(login, passwordHash)
         if(!checkCredentials) return false
-        return JWTService.createJWTToken(findUserByLogin)
+        return JWTService.createJWTPair(checkCredentials)
+
+
+        //return JWTService.createJWTToken(findUserByLogin)
     },
     async resendingEmail(email: string, user: UserDBType){
         const newEmailConfirmation: UserDBType = {

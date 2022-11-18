@@ -1,5 +1,13 @@
 import {MongoClient} from "mongodb"
-import {AttemptsType, BlogDBType, CommentDBModalType, PostDBType, UserDBType, VideoDBType} from "../types/types";
+import {
+    AttemptsType,
+    BlogDBType,
+    CommentDBModalType,
+    PostDBType,
+    TokenType,
+    UserDBType,
+    VideoDBType
+} from "../types/types";
 
 
 //"mongodb+srv://admin:admin@cluster0.9zvor.mongodb.net/?retryWrites=true&w=majority"
@@ -23,3 +31,4 @@ export const postsCollection = db.collection<PostDBType>("posts")
 export const usersCollection = db.collection<UserDBType>("users")
 export const commentsCollection = db.collection<CommentDBModalType>("comments")
 export const attemptsCollection = db.collection<AttemptsType>("attempts")
+export const tokenBlackListCollection = db.collection<TokenType>('tokenBlackList')

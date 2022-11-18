@@ -1,7 +1,7 @@
 import {
     bloggersCollection,
     commentsCollection,
-    postsCollection,
+    postsCollection, tokenBlackListCollection,
     usersCollection,
     videosCollection
 } from "../repository/db";
@@ -105,6 +105,9 @@ export const queryRepository = {
     },
     async findUserByEmail(email:string){
         return usersCollection.findOne({email})
+    },
+    async findTokenInBlackList(refreshToken: string){
+        return tokenBlackListCollection.findOne({refreshToken})
     }
 
 }

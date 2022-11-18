@@ -11,6 +11,7 @@ import {queryRepository} from "../queryRepository/queryRepository";
 import {UserAboutInfoType} from "../types/types";
 import {usersService} from "../domain/usersService";
 import {attemptsMiddleware} from "../middleware/attempsMiddleware";
+import {JWTService} from "../domain/JWTService";
 
 export const authRouter = Router({})
 
@@ -21,9 +22,8 @@ authRouter.post('/login', loginInputValidation, attemptsMiddleware, async (req:R
     const loginUser = await authService.loginUser(login, password)
 
     if(!loginUser) return res.sendStatus(401)
-
-
-    res.status(200).send({'accessToken': loginUser})
+    res.cookie('refreshToken', loginUser.refreshToken, {httpOnly:true, secure: true})
+    res.status(200).send({'accessToken': loginUser.accessToken})
 })
 authRouter.get('/me', bearerAuthMiddleWare, async (req:Request, res:Response) =>{
     const user = req.user!.id
@@ -76,4 +76,13 @@ authRouter.post('/registration-email-resending', attemptsMiddleware, emailValida
         return res.sendStatus(204)
     }
 
+})
+
+authRouter.post('/refresh-token', async (req:Request, res: Response)=>{
+    const refreshToken = req.cookies.refreshToken
+    if(!refreshToken) return res.sendStatus(401)
+    const updateTokenPair = await JWTService.updateJWTTokenPair(refreshToken)
+    if(!updateTokenPair) return res.sendStatus(401)
+    res.cookie('refreshToken', updateTokenPair.refreshToken, {httpOnly:true, secure: true})
+    res.status(200).send({accessToken: updateTokenPair.accessToken})
 })

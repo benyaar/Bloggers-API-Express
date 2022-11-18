@@ -94,3 +94,7 @@ export type AttemptsType = {
     url: string,
     time: Date
 }
+
+export type TokenType = {
+    refreshToken: string
+}
