@@ -17,7 +17,7 @@ const port = process.env.PORT || 3000
 
 app.use(bodyParser.json())
 app.use(cors())
-//app.use(cookieParser())
+app.use(cookieParser())
 app.use("/videos", videosRouter)
 app.use("/testing", deleteDataRouter)
 app.use("/blogs", bloggersRouter)
