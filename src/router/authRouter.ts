@@ -85,6 +85,7 @@ authRouter.post('/refresh-token', async (req:Request, res: Response)=>{
     const createNewTokenPair = await JWTService.createJWTPair(updateTokenPair)
     res.cookie('refreshToken', createNewTokenPair.refreshToken, {httpOnly:true, secure: true})
     res.status(200).send({accessToken: createNewTokenPair.accessToken})
+
 })
 
 authRouter.post('/logout', async (req:Request, res: Response)=>{
