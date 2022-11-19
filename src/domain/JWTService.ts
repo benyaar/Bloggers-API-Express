@@ -27,7 +27,7 @@ export const JWTService = {
         const findTokenInBlackList = await queryRepository.findTokenInBlackList(refreshToken)
         if(!findTokenInBlackList) return false
         const findUserIdByToken = await JWTService.getUseIdByToken(refreshToken)
-        if(!findTokenInBlackList) return false
+        if(findTokenInBlackList) return false
         const findUserById = await queryRepository.findUserById(findUserIdByToken)
         if(!findUserById) return false
         await JWTRepository.addRefreshTokenInBlackList({refreshToken})
