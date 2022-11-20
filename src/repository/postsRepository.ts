@@ -3,7 +3,7 @@ import {postsCollection} from "./db";
 
 export const postsRepository = {
     async createNewPost(newPost:PostDBType) {
-        return postsCollection.insertOne(newPost)
+        return postsCollection.insertMany(newPost)
     },
     async updatePost (postId:string, title: string, shortDescription: string, content: string){
         const updatePost = await postsCollection.updateOne({id:postId}, {$set: {title, shortDescription, content}})

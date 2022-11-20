@@ -5,7 +5,7 @@ import {bloggersCollection} from "./db";
 
 export const bloggersRepository = {
     async createNewBlog (newBlog: BlogDBType) {
-        return bloggersCollection.insertOne(newBlog)
+        return bloggersCollection.insertMany(newBlog)
     },
     async updateBlog(blogId:string, name: string, description:string, websiteUrl: string){
         const updateBlog = await bloggersCollection.updateOne({id: blogId}, {$set:{name, description, websiteUrl}})

@@ -4,7 +4,7 @@ import {commentsCollection} from "./db";
 
 export const commentsRepository = {
     async createNewComments(newComment: CommentDBModalType) {
-         return commentsCollection.insertOne(newComment)
+         return commentsCollection.insertMany(newComment)
     },
     async updateComment(id: string, content: string, user:UserDBType){
         const updateComment = await commentsCollection.updateOne({id, userId: user.id}, {$set: {content}})

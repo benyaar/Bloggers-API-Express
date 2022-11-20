@@ -4,7 +4,7 @@ import {videosCollection} from "./db";
 
 export const videosRepository = {
     async createNewVideo(newVideo: VideoDBType) {
-        await videosCollection.insertOne(newVideo)
+        await videosCollection.insertMany(newVideo)
         const {_id, ...newVideoCopy} = newVideo
         return newVideoCopy
     },

@@ -3,7 +3,7 @@ import {usersCollection} from "./db";
 
 export const usersRepository = {
     async createNewUser (newUser: UserDBType){
-        return usersCollection.insertOne(newUser)
+        return usersCollection.insertMany(newUser)
     },
     async deleteUser(id: string){
         const deleteUser = await usersCollection.deleteOne({id})
