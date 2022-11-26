@@ -4,10 +4,10 @@ import {JWTService} from "../domain/JWTService";
 
 export const checkRefreshTokenMiddleWare = async (req: Request, res:Response, next:NextFunction) => {
     const refreshToken = req.cookies.refreshToken
-    if (!refreshToken) return res.sendStatus(404)
+    if (!refreshToken) return res.sendStatus(401)
 
     const checkVerifyToken = await JWTService.getDataByToken(refreshToken)
-    if(!checkVerifyToken) return res.sendStatus(404)
+    if(!checkVerifyToken) return res.sendStatus(401)
 
     const tokenTime = checkVerifyToken.exp
     if (!tokenTime) return res.sendStatus(404)
