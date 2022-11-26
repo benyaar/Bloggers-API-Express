@@ -78,7 +78,7 @@ export const TokenModalScheme = new mongoose.Schema<TokenType>({
 export const UserSessionsScheme = new mongoose.Schema<UserSessionsType>({
     ip: String,
     title: String,
-    lastActiveDate: Number,
+    lastActiveDate: Date,
     deviceId: String,
     userId:String,
 
