@@ -14,6 +14,12 @@ const options = {
         emailConfirmation:0,
         __v:0
 }
+
+const optionsForUserSessions ={
+    _id:0,
+    __v:0,
+    userId:0
+}
 export const queryRepository = {
     async getAllVideos () {
         return videosCollection.find({}, options)
@@ -99,7 +105,7 @@ export const queryRepository = {
         return tokenBlackListCollection.findOne({refreshToken})
     },
     async getSessionByDevices(userId:string){
-        return usersSessionsCollection.find({userId}, options)
+        return usersSessionsCollection.find({userId},optionsForUserSessions)
     },
     async findDeviceById(deviceId: string) {
         return usersSessionsCollection.findOne({deviceId}, options)
