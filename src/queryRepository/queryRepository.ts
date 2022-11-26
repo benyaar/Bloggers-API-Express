@@ -2,7 +2,7 @@ import {
     bloggersCollection,
     commentsCollection,
     postsCollection, tokenBlackListCollection,
-    usersCollection,
+    usersCollection, usersSessionsCollection,
     videosCollection
 } from "../repository/db";
 import {paginationResult} from "../helpers/pagination";
@@ -10,16 +10,13 @@ import {paginationResult} from "../helpers/pagination";
 
 
 const options = {
-    projection: {
         _id:0,
         passwordHash:0,
         postId:0,
-        emailConfirmation:0
-    }
+        emailConfirmation:0,
+        __v:0
 }
-
 export const queryRepository = {
-
     async getAllVideos () {
         return videosCollection.find({}, options)
     },
@@ -29,12 +26,10 @@ export const queryRepository = {
     async getAllBlogs (searchNameTerm: string, pageNumber:number, pageSize:number, sortBy:any, sortDirection: any) {
 
        const findAndSortedBlogs =  await bloggersCollection
-           .find({name: { $regex : searchNameTerm , $options : "i"}}, options)
+           .find({name: { $regex : searchNameTerm , $options : "i"}}, options).lean()
            .sort({[sortBy]: sortDirection})
            .skip((pageNumber - 1) * pageSize)
            .limit(pageSize)
-
-
         const getCountBlogs = await bloggersCollection.countDocuments({name: { $regex : searchNameTerm , $options : "i"}})
         return paginationResult(pageNumber, pageSize, getCountBlogs, findAndSortedBlogs)
     },
@@ -48,9 +43,9 @@ export const queryRepository = {
             .sort({[sortBy]: sortDirection})
             .skip((pageNumber - 1) * pageSize)
             .limit(pageSize)
+
         const getCountPosts = await postsCollection.countDocuments()
         return paginationResult(pageNumber, pageSize, getCountPosts, findAndSortedPosts)
-
     },
     async getPostById (id:string) {
         return postsCollection.findOne({id}, options)
@@ -71,7 +66,7 @@ export const queryRepository = {
             .find({$or : [{login: { $regex : searchLoginTerm , $options : "i"}}, {email: { $regex : searchEmailTerm , $options : "i"}}]}, options)
             .sort({[sortBy]: sortDirection})
             .skip((pageNumber - 1) * pageSize)
-            .limit(pageSize)
+            .limit(pageSize).lean()
         const getCountUsers = await usersCollection.countDocuments({$or : [{login: { $regex : searchLoginTerm , $options : "i"}}, {email: { $regex : searchEmailTerm , $options : "i"}}]})
         return paginationResult(pageNumber, pageSize, getCountUsers, findAndSortedUsers)
     },
@@ -104,6 +99,11 @@ export const queryRepository = {
     },
     async findTokenInBlackList(refreshToken: string){
         return tokenBlackListCollection.findOne({refreshToken})
+    },
+    async getSessionByDevices(userId:string){
+        return usersSessionsCollection.find({userId}, options)
+    },
+    async findDeviceById(deviceId: string) {
+        return usersSessionsCollection.findOne({deviceId}, options)
     }
-
 }

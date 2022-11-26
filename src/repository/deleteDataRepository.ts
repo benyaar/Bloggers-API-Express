@@ -4,7 +4,7 @@ import {
     bloggersCollection,
     commentsCollection,
     postsCollection, tokenBlackListCollection,
-    usersCollection,
+    usersCollection, usersSessionsCollection,
     videosCollection
 } from "./db";
 
@@ -17,6 +17,7 @@ export const deleteDataRepository = {
         await commentsCollection.deleteMany({})
         await attemptsCollection.deleteMany({})
         await tokenBlackListCollection.deleteMany({})
+        await usersSessionsCollection.deleteMany({})
         return true
     }
 }

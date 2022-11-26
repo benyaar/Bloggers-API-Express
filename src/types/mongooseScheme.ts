@@ -1,5 +1,14 @@
 import mongoose from "mongoose";
-import {AttemptsType, BlogDBType, CommentDBModalType, PostDBType, TokenType, UserDBType, VideoDBType} from "./types";
+import {
+    AttemptsType,
+    BlogDBType,
+    CommentDBModalType,
+    PostDBType,
+    TokenType,
+    UserDBType,
+    UserSessionsType,
+    VideoDBType
+} from "./types";
 import {ObjectId} from "mongodb";
 
 export const VideoModelScheme = new mongoose.Schema<VideoDBType>({
@@ -15,14 +24,13 @@ export const VideoModelScheme = new mongoose.Schema<VideoDBType>({
 })
 
 export const BlogsDBModalScheme = new mongoose.Schema<BlogDBType>({
-    _id: ObjectId,
+    _id: {type:ObjectId, select:false},
     id: String,
     name: String,
     description: String,
     websiteUrl: String,
     createdAt: Date,
 })
-
 export const  PostDBModalScheme = new mongoose.Schema<PostDBType>({
     _id: ObjectId,
     id: String,
@@ -65,4 +73,13 @@ export const AttemptsModalScheme = new mongoose.Schema<AttemptsType>({
 
 export const TokenModalScheme = new mongoose.Schema<TokenType>({
     refreshToken: String
+})
+
+export const UserSessionsScheme = new mongoose.Schema<UserSessionsType>({
+    ip: String,
+    title: String,
+    lastActiveDate: Number,
+    deviceId: String,
+    userId:String,
+
 })

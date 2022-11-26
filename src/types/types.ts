@@ -20,7 +20,6 @@ export type BlogDBType = {
     description: string,
     websiteUrl: string
     createdAt: Date,
-
 }
 
 export type BlogViewModelType = WithoutId<BlogDBType>
@@ -98,5 +97,18 @@ export type AttemptsType = {
 }
 
 export type TokenType = {
+    refreshToken: string
+}
+
+export type UserSessionsType = {
+    ip: string,
+    title: string,
+    lastActiveDate: number,
+    deviceId: string,
+    userId: string,
+}
+
+export type TokenPairType = {
+    accessToken: string,
     refreshToken: string
 }

@@ -9,17 +9,20 @@ import add from "date-fns/add";
 import {usersRepository} from "../repository/usersRepository";
 import {emailService} from "./emailService";
 
+import {userSessionsService} from "./userSessionsService";
+
 export const authService = {
-    async loginUser (loginOrEmail: string, password: string) {
+    async loginUser (loginOrEmail: string, password: string, ip:string, title:string) {
         const findUserByLoginOrEmail = await queryRepository.findUserByLoginOrEmail(loginOrEmail)
         if(!findUserByLoginOrEmail) return false
         const passwordSalt = findUserByLoginOrEmail.passwordHash.slice(0,29)
         const passwordHash = await bcrypt.hash(password, passwordSalt)
         const checkCredentials = await authRepository.loginUser(loginOrEmail, passwordHash)
         if(!checkCredentials) return false
-        return JWTService.createJWTPair(checkCredentials)
-
-
+        const deviceId = new ObjectId().toString()
+        const createJWT = await JWTService.createJWTPair(checkCredentials, deviceId)
+         await userSessionsService.createNewUserSession(ip,title,deviceId, findUserByLoginOrEmail, createJWT)
+        return createJWT
     },
     async resendingEmail(email: string, user: UserDBType){
         const newEmailConfirmation: UserDBType = {
@@ -50,5 +53,4 @@ export const authService = {
             return true
         }
     }
-
 }

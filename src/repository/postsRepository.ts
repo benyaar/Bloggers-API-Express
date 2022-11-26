@@ -13,5 +13,5 @@ export const postsRepository = {
         const deletePost = await postsCollection.deleteOne({id:postId})
          return deletePost.deletedCount === 1
     }
-
 }
+

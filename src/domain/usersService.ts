@@ -3,7 +3,6 @@ import bcrypt from "bcrypt"
 import {UserDBType} from "../types/types";
 import {usersRepository} from "../repository/usersRepository";
 import {queryRepository} from "../queryRepository/queryRepository";
-import {emailService} from "./emailService";
 import  {v4 as uuidv4} from 'uuid'
 import add from 'date-fns/add'
 
@@ -36,7 +35,7 @@ export const usersService = {
             }
             }
         await usersRepository.createNewUser(newUser)
-        await emailService.sendEmail(email, code)
+       // await emailService.sendEmail(email, code)
 
         return newUser
     },

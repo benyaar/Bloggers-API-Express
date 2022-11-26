@@ -11,7 +11,7 @@ export const bloggersService = {
             name,
             description,
             websiteUrl,
-            createdAt: new Date()
+            createdAt: new Date(),
         }
         await bloggersRepository.createNewBlog(newBlogger)
         return newBlogger

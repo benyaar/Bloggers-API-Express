@@ -5,7 +5,7 @@ import {
     CommentDBModalType,
     PostDBType,
     TokenType,
-    UserDBType,
+    UserDBType, UserSessionsType,
     VideoDBType
 } from "../types/types";
 import * as mongoose from "mongoose";
@@ -14,31 +14,23 @@ import {
     BlogsDBModalScheme,
     CommentDBModalScheme,
     PostDBModalScheme, TokenModalScheme,
-    UserDBModalScheme,
+    UserDBModalScheme, UserSessionsScheme,
     VideoModelScheme
 } from "../types/mongooseScheme";
 
-const mongoURi = process.env.mongoURI || "mongodb+srv://admin:admin@cluster0.9zvor.mongodb.net/?retryWrites=true&w=majority"
+const mongoURI = process.env.mongoURI || "mongodb+srv://admin:admin@backapi.wojaaxk.mongodb.net/?retryWrites=true&w=majority";
 
-//export const client = new MongoClient(mongoURi)
-const dbName = "backSamurai"
+//const mongoURI = process.env.mongoURI || "mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.5.1";
 
-export async function runDB() {
-    try{
-        await mongoose.connect(mongoURi+'/'+dbName)
-        console.log("Successfully connect to MONGO")
-    }catch {
-        await mongoose.disconnect()
-    }
-}
 
 export const videosCollection =  mongoose.model<VideoDBType>('videos', VideoModelScheme)
 export const bloggersCollection = mongoose.model<BlogDBType>('blogs', BlogsDBModalScheme)
 export const postsCollection = mongoose.model<PostDBType>('posts', PostDBModalScheme)
 export const usersCollection = mongoose.model<UserDBType>('users', UserDBModalScheme)
 export const commentsCollection = mongoose.model<CommentDBModalType>('comments', CommentDBModalScheme)
-export const attemptsCollection = mongoose.model<AttemptsType>('attemps', AttemptsModalScheme)
+export const attemptsCollection = mongoose.model<AttemptsType>('attempts', AttemptsModalScheme)
 export const tokenBlackListCollection = mongoose.model<TokenType>('tokenBlackList', TokenModalScheme)
+export const usersSessionsCollection = mongoose.model<UserSessionsType>('userSessions', UserSessionsScheme)
 
 // export const videosCollection = db.collection<VideoDBType>("videos")
 // export const bloggersCollection = db.collection<BlogDBType>("blogs")
@@ -47,5 +39,17 @@ export const tokenBlackListCollection = mongoose.model<TokenType>('tokenBlackLis
 // export const commentsCollection = db.collection<CommentDBModalType>("comments")
 // export const attemptsCollection = db.collection<AttemptsType>("attempts")
 // export const tokenBlackListCollection = db.collection<TokenType>('tokenBlackList')
+
+export async function runDB() {
+    try {
+        await mongoose.connect(mongoURI)
+        console.log("Connected successfully to mongoose server")
+    } catch {
+        await mongoose.disconnect()
+        console.log("Not connected")
+    }
+}
+
+
 
 

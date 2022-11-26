@@ -11,18 +11,23 @@ import {UserAboutInfoType} from "../types/types";
 import {usersService} from "../domain/usersService";
 import {attemptsMiddleware} from "../middleware/attempsMiddleware";
 import {JWTService} from "../domain/JWTService";
+import {userSessionsService} from "../domain/userSessionsService";
+import {checkRefreshTokenMiddleWare} from "../middleware/checkRefreshTokenMiddleWare";
 
 export const authRouter = Router({})
 
 authRouter.post('/login', attemptsMiddleware, async (req:Request, res:Response) =>{
     const loginOrEmail = req.body.loginOrEmail
     const password = req.body.password
-
-    const loginUser = await authService.loginUser(loginOrEmail, password)
+    const ip = req.ip
+    const title = req.headers['user-agent'] || "browser not found"
+    const loginUser = await authService.loginUser(loginOrEmail, password, ip, title)
 
     if(!loginUser) return res.sendStatus(401)
     res.cookie('refreshToken', loginUser.refreshToken, {httpOnly:true, secure: true})
     res.status(200).send({'accessToken': loginUser.accessToken})
+    res.status(200).send(loginUser)
+
 })
 authRouter.get('/me', bearerAuthMiddleWare, async (req:Request, res:Response) =>{
     const user = req.user!.id
@@ -77,12 +82,23 @@ authRouter.post('/registration-email-resending', attemptsMiddleware, emailValida
 
 })
 
-authRouter.post('/refresh-token', async (req:Request, res: Response)=>{
+authRouter.post('/refresh-token', checkRefreshTokenMiddleWare, async (req:Request, res: Response)=>{
     const refreshToken = req.cookies.refreshToken
-    if(!refreshToken) return res.sendStatus(401)
-    const updateTokenPair = await JWTService.updateorDeleteJWTTokenPair(refreshToken)
-    if(!updateTokenPair) return res.sendStatus(401)
-    const createNewTokenPair = await JWTService.createJWTPair(updateTokenPair)
+    const ip = req.ip
+    const title = req.headers['user-agent'] || "browser not found"
+
+    await JWTService.addRefreshTokenInBlackList(refreshToken)
+    const getTokenData = await JWTService.getDataByToken(refreshToken)
+
+
+   // const createNewTokenPair = await JWTService.createJWTPair(getTokenData.userId, getTokenData.deviceId)
+    const createNewTokenPair = await JWTService.createJWTPair(refreshToken.userId, refreshToken.deviceId)
+    const newTokenVerify = await JWTService.getDataByToken(createNewTokenPair.refreshToken)
+    const getIatToken = newTokenVerify.iat * 1000
+
+    await userSessionsService.updateUserSessions(getTokenData.id, getTokenData.deviceId, getIatToken, ip, title )
+
+
     res.cookie('refreshToken', createNewTokenPair.refreshToken, {httpOnly:true, secure: true})
     res.status(200).send({accessToken: createNewTokenPair.accessToken})
 
@@ -91,7 +107,7 @@ authRouter.post('/refresh-token', async (req:Request, res: Response)=>{
 authRouter.post('/logout', async (req:Request, res: Response)=>{
     const refreshToken = req.cookies.refreshToken
     if(!refreshToken) return res.sendStatus(401)
-    const deleteTokenPair = await JWTService.updateorDeleteJWTTokenPair(refreshToken)
+    const deleteTokenPair = await JWTService.addRefreshTokenInBlackList(refreshToken)
     if(!deleteTokenPair) return res.sendStatus(401)
     res.sendStatus(204)
 })
