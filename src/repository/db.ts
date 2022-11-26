@@ -18,9 +18,9 @@ import {
     VideoModelScheme
 } from "../types/mongooseScheme";
 
-//const mongoURI = process.env.mongoURI || "mongodb+srv://admin:admin@backapi.wojaaxk.mongodb.net/?retryWrites=true&w=majority";
+const mongoURI = process.env.mongoURI || "mongodb+srv://admin:admin@backapi.wojaaxk.mongodb.net/?retryWrites=true&w=majority";
 
-const mongoURI = process.env.mongoURI || "mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.5.1";
+//const mongoURI = process.env.mongoURI || "mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.5.1";
 
 
 export const videosCollection =  mongoose.model<VideoDBType>('videos', VideoModelScheme)
