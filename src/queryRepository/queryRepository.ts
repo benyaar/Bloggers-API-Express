@@ -7,8 +7,6 @@ import {
 } from "../repository/db";
 import {paginationResult} from "../helpers/pagination";
 
-
-
 const options = {
         _id:0,
         passwordHash:0,
@@ -106,4 +104,6 @@ export const queryRepository = {
     async findDeviceById(deviceId: string) {
         return usersSessionsCollection.findOne({deviceId}, options)
     }
+
+
 }

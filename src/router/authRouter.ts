@@ -25,9 +25,7 @@ authRouter.post('/login', attemptsMiddleware, async (req:Request, res:Response) 
 
     if(!loginUser) return res.sendStatus(401)
     res.cookie('refreshToken', loginUser.refreshToken, {httpOnly:true, secure: true})
-    res.status(200).send({'accessToken': loginUser.accessToken})
-    res.status(200).send(loginUser)
-
+    res.status(200).send({'accessToken': loginUser.accessToken, 'refresh': loginUser.refreshToken})
 })
 authRouter.get('/me', bearerAuthMiddleWare, async (req:Request, res:Response) =>{
     const user = req.user!.id
@@ -38,7 +36,6 @@ authRouter.get('/me', bearerAuthMiddleWare, async (req:Request, res:Response) =>
         login: userInfo?.login,
         userId: userInfo?.id,
     }
-
     res.status(200).send(userAbout)
 })
 
@@ -79,7 +76,6 @@ authRouter.post('/registration-email-resending', attemptsMiddleware, emailValida
         await authService.resendingEmail(email, findUserByEmail)
         return res.sendStatus(204)
     }
-
 })
 
 authRouter.post('/refresh-token', checkRefreshTokenMiddleWare, async (req:Request, res: Response)=>{
