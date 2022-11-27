@@ -87,8 +87,8 @@ authRouter.post('/refresh-token', checkRefreshTokenMiddleWare, async (req:Reques
     const getTokenData = await JWTService.getDataByToken(refreshToken)
 
 
-   // const createNewTokenPair = await JWTService.createJWTPair(getTokenData.userId, getTokenData.deviceId)
-    const createNewTokenPair = await JWTService.createJWTPair(refreshToken.userId, refreshToken.deviceId)
+   const createNewTokenPair = await JWTService.createJWTPair(getTokenData.userId, getTokenData.deviceId)
+    //const createNewTokenPair = await JWTService.createJWTPair(refreshToken.userId, refreshToken.deviceId)
     const newTokenVerify = await JWTService.getDataByToken(createNewTokenPair.refreshToken)
     const getIatToken = newTokenVerify.iat * 1000
 
