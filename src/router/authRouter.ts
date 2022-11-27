@@ -83,7 +83,6 @@ authRouter.post('/refresh-token', checkRefreshTokenMiddleWare, async (req:Reques
     const ip = req.ip
     const title = req.headers['user-agent'] || "browser not found"
 
-
     const getTokenData = await JWTService.getDataByToken(refreshToken)
 
 
