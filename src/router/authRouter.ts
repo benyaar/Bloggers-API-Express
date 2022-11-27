@@ -83,17 +83,16 @@ authRouter.post('/refresh-token', checkRefreshTokenMiddleWare, async (req:Reques
     const ip = req.ip
     const title = req.headers['user-agent'] || "browser not found"
 
-    await JWTService.addRefreshTokenInBlackList(refreshToken)
+
     const getTokenData = await JWTService.getDataByToken(refreshToken)
 
 
    const createNewTokenPair = await JWTService.createJWTPair(getTokenData.userId, getTokenData.deviceId)
-    //const createNewTokenPair = await JWTService.createJWTPair(refreshToken.userId, refreshToken.deviceId)
     const newTokenVerify = await JWTService.getDataByToken(createNewTokenPair.refreshToken)
     const getIatToken = newTokenVerify.iat * 1000
 
     await userSessionsService.updateUserSessions(getTokenData.id, getTokenData.deviceId, getIatToken, ip, title )
-
+    await JWTService.addRefreshTokenInBlackList(refreshToken)
 
     res.cookie('refreshToken', createNewTokenPair.refreshToken, {httpOnly:true, secure: true})
     res.status(200).send({accessToken: createNewTokenPair.accessToken})
