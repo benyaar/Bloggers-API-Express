@@ -33,6 +33,9 @@ userSessionsRouter.delete('/devices/:deviceId', checkRefreshTokenMiddleWare, asy
     const deviceId = req.params.deviceId
     const refreshToken =  req.cookies.refreshToken
 
+    const findDeviceByDeviceId = await queryRepository.findDeviceByDeviceId(deviceId)
+    if(!findDeviceByDeviceId) return  res.sendStatus(404)
+
     const getDataFromToken = await JWTService.getDataByToken(refreshToken)
     const userId = getDataFromToken.userId
     const findDeviceIdFromUserId = await queryRepository.findDeviceByUseId(userId)

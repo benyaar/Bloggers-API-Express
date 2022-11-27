@@ -22,7 +22,7 @@ export const checkRefreshTokenMiddleWare = async (req: Request, res:Response, ne
     if (findTokenInBlackList) return res.sendStatus(404)
 
     const deviceId = checkVerifyToken.deviceId
-    const findDeviceByDeviceId = await queryRepository.findDeviceById(deviceId)
+    const findDeviceByDeviceId = await queryRepository.findDeviceByDeviceId(deviceId)
     if(!findDeviceByDeviceId) return res.sendStatus(401)
     if (findUserById.id !== findDeviceByDeviceId.userId) return res.sendStatus(403)
 

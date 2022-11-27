@@ -107,7 +107,7 @@ export const queryRepository = {
     async getSessionByUserId(userId:string){
         return usersSessionsCollection.find({userId},optionsForUserSessions)
     },
-    async findDeviceById(deviceId: string) {
+    async findDeviceByDeviceId(deviceId: string) {
         return usersSessionsCollection.findOne({deviceId}, options)
     },
     async findDeviceByUseId(userId:string){
