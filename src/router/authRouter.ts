@@ -99,10 +99,14 @@ authRouter.post('/refresh-token', checkRefreshTokenMiddleWare, async (req:Reques
 
 })
 
-authRouter.post('/logout', async (req:Request, res: Response)=>{
+authRouter.post('/logout', checkRefreshTokenMiddleWare, async (req:Request, res: Response)=>{
     const refreshToken = req.cookies.refreshToken
-    if(!refreshToken) return res.sendStatus(401)
+    const getDataFromRefreshToken = await JWTService.getDataByToken(refreshToken)
+    const userId = getDataFromRefreshToken.userId
+    const deviceId = getDataFromRefreshToken.deviceId
+
     const deleteTokenPair = await JWTService.addRefreshTokenInBlackList(refreshToken)
     if(!deleteTokenPair) return res.sendStatus(401)
+     await userSessionsService.deleteDeviceByDeviceId(userId, deviceId)
     res.sendStatus(204)
 })
