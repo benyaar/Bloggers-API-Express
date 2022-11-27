@@ -13,8 +13,8 @@ userSessionsRouter.get('/devices', checkRefreshTokenMiddleWare, async (req:Reque
     const getDataFromToken = await JWTService.getDataByToken(refreshToken)
     const userId = getDataFromToken.userId
 
-    const getSessionByDevices = await queryRepository.getSessionByDevices(userId)
-    res.status(200).send(getSessionByDevices)
+    const getSessionByUserId = await queryRepository.getSessionByUserId(userId)
+    res.status(200).send(getSessionByUserId)
 })
 
 
@@ -22,8 +22,10 @@ userSessionsRouter.delete('/devices', checkRefreshTokenMiddleWare, async(req:Req
     const refreshToken =  req.cookies.refreshToken
     const getDataFromToken = await JWTService.getDataByToken(refreshToken)
     const userId = getDataFromToken.userId
+    const deviceId = getDataFromToken.deviceId
 
-    await userSessionsService.deleteAllDevice(userId)
+    await JWTService.addRefreshTokenInBlackList(refreshToken)
+    await userSessionsService.deleteAllDevice(userId, deviceId)
     res.sendStatus(204)
 })
 

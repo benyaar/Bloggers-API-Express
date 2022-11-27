@@ -104,7 +104,7 @@ export const queryRepository = {
     async findTokenInBlackList(refreshToken: string){
         return tokenBlackListCollection.findOne({refreshToken})
     },
-    async getSessionByDevices(userId:string){
+    async getSessionByUserId(userId:string){
         return usersSessionsCollection.find({userId},optionsForUserSessions)
     },
     async findDeviceById(deviceId: string) {

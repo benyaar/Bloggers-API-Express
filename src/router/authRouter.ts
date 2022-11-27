@@ -39,7 +39,7 @@ authRouter.get('/me', bearerAuthMiddleWare, async (req:Request, res:Response) =>
     res.status(200).send(userAbout)
 })
 
-authRouter.post('/registration', registrationValidation, async (req: Request, res: Response) => {
+authRouter.post('/registration', attemptsMiddleware, registrationValidation, async (req: Request, res: Response) => {
     const login = req.body.login
     const password = req.body.password
     const email = req.body.email
@@ -57,7 +57,7 @@ authRouter.post('/registration', registrationValidation, async (req: Request, re
     res.sendStatus(204)
 })
 
-authRouter.post('/registration-confirmation', async (req:Request, res:Response)=>{
+authRouter.post('/registration-confirmation', attemptsMiddleware, async (req:Request, res:Response)=>{
     const error = { errorsMessages: [{ message: 'code', field: "code" }]}
     const confirmationCode = req.body.code
     const findUserByCode = await queryRepository.findUserByCode(confirmationCode)
