@@ -114,8 +114,7 @@ authRouter.post('/password-recovery', attemptsMiddleware, emailValidation, expre
     const email = req.body.email
     if(!email) return res.sendStatus(404)
 
-    const findUserByEmail = await queryRepository.findUserByEmail(email)
-    if(!findUserByEmail) return res.sendStatus(404)
+     await queryRepository.findUserByEmail(email)
     await authService.passwordRecovery(email)
 
     res.sendStatus(204)
