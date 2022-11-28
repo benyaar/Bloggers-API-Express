@@ -10,7 +10,10 @@ userSessionsRouter.get('/devices', checkRefreshTokenMiddleWare, async (req:Reque
    const refreshToken =  req.cookies.refreshToken
 
 
+
     const getDataFromToken = await JWTService.getDataByToken(refreshToken)
+
+    console.log(getDataFromToken)
     const userId = getDataFromToken.userId
 
     const getSessionByUserId = await queryRepository.getSessionByUserId(userId)

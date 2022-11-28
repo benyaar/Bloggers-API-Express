@@ -20,7 +20,7 @@ export const authService = {
         const checkCredentials = await authRepository.loginUser(loginOrEmail, passwordHash)
         if(!checkCredentials) return false
         const deviceId = new ObjectId().toString()
-        const createJWT = await JWTService.createJWTPair(checkCredentials, deviceId)
+        const createJWT = await JWTService.createJWTPair(checkCredentials.id, deviceId)
          await userSessionsService.createNewUserSession(ip,title,deviceId, findUserByLoginOrEmail, createJWT)
         return createJWT
     },

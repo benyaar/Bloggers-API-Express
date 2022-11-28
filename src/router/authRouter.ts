@@ -38,7 +38,6 @@ authRouter.get('/me', bearerAuthMiddleWare, async (req:Request, res:Response) =>
     }
     res.status(200).send(userAbout)
 })
-
 authRouter.post('/registration', attemptsMiddleware, registrationValidation, async (req: Request, res: Response) => {
     const login = req.body.login
     const password = req.body.password
@@ -94,7 +93,7 @@ authRouter.post('/refresh-token', checkRefreshTokenMiddleWare, async (req:Reques
     await JWTService.addRefreshTokenInBlackList(refreshToken)
 
     res.cookie('refreshToken', createNewTokenPair.refreshToken, {httpOnly:true, secure: true})
-    res.status(200).send({accessToken: createNewTokenPair.accessToken})
+    res.status(200).send({accessToken: createNewTokenPair.accessToken, refreshToken: createNewTokenPair.refreshToken})
 
 })
 
