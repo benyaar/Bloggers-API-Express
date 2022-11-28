@@ -20,8 +20,8 @@ export const userSessionsService = {
     async updateUserSessions(userId:string, deviceId:string, iatToken: number, ip:string, title: string){
         return userSessionsRepository.updateUserSessions(userId, deviceId, iatToken, ip, title)
     },
-    async deleteAllDevice (userId:string, deviceId:string){
-        return userSessionsRepository.deleteAllDevice(userId, deviceId)
+    async deleteAllDevice (userId:string){
+        return userSessionsRepository.deleteAllDevice(userId)
     },
     async deleteDeviceByDeviceId(userId:string, deviceId:string){
         return userSessionsRepository.deleteDeviceByDeviceId(userId, deviceId)
