@@ -5,9 +5,14 @@ import {usersRepository} from "../repository/usersRepository";
 import {queryRepository} from "../queryRepository/queryRepository";
 import  {v4 as uuidv4} from 'uuid'
 import add from 'date-fns/add'
+import {emailService} from "./emailService";
 
 
 export const usersService = {
+    async generateSaltAndPasswordHash(password:string){
+        const passwordSalt = await bcrypt.genSalt(10)
+        return bcrypt.hash(password, passwordSalt)
+    },
 
     async createNewUser(login:string, email:string, password: string){
         const findUserByLogin = await queryRepository.findUserByLogin(login)
@@ -15,8 +20,7 @@ export const usersService = {
         const findUserByEmail = await queryRepository.findUserByEmail(email)
         if(findUserByEmail) return false
 
-        const passwordSalt = await bcrypt.genSalt(10)
-        const passwordHash = await bcrypt.hash(password, passwordSalt)
+        const passwordHash = await this.generateSaltAndPasswordHash(password)
         const code = uuidv4()
         const newUser: UserDBType = {
             _id: new ObjectId(),
@@ -35,12 +39,11 @@ export const usersService = {
             }
             }
         await usersRepository.createNewUser(newUser)
-       // await emailService.sendEmail(email, code)
+       //await emailService.sendEmail(email, code)
 
         return newUser
     },
     async deleteUser (id: string){
         return usersRepository.deleteUser(id)
     },
-
 }

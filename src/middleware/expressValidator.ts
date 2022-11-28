@@ -44,7 +44,7 @@ export const paginationValidation = [searchNameTermValidation, pageNumberValidat
 
 const loginValidation = body('login').trim().isLength({min:3, max:10})
 export const emailValidation = body('email').trim().isEmail()
-const passwordValidation = body('password').trim().isLength({min:6, max:20})
+export const passwordValidation = body('password').trim().isLength({min:6, max:20})
 export const registrationValidation = [loginValidation, emailValidation, passwordValidation, expressValidator]
 
 export const commentsContentValidation = body("content").trim().isLength({min:20, max:300})

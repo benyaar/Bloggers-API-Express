@@ -10,6 +10,7 @@ import {usersRepository} from "../repository/usersRepository";
 import {emailService} from "./emailService";
 
 import {userSessionsService} from "./userSessionsService";
+import {usersService} from "./usersService";
 
 
 export const authService = {
@@ -57,7 +58,7 @@ export const authService = {
             return true
         }
     },
-    async passwordRecovery(email: string) {
+    async sendMessageForPasswordRecovery(email: string) {
         const recoveryCode: RecoveryCodeType = {
             email: email,
             recoveryCode: uuidv4()
@@ -66,5 +67,11 @@ export const authService = {
         const bodyTextMessage = `https://somesite.com/password-recovery?recoveryCode=${recoveryCode.recoveryCode}`
         await emailService.sendEmail(email, "Recovery password", bodyTextMessage)
         return
+    },
+    async changePasswordRecovery(email: string, newPassword: string) {
+        const passwordHash = await usersService.generateSaltAndPasswordHash(newPassword)
+        const updateUserHash = await usersRepository.updateUserHash(email, passwordHash)
+
+
     }
 }

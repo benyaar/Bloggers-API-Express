@@ -19,5 +19,9 @@ export const usersRepository = {
     async updateUserConfirmation(id: string){
         const updateUser = await usersCollection.updateOne({id},{$set: {'emailConfirmation.isConfirmed': true}})
         return updateUser.matchedCount===1
+    },
+    async updateUserHash(email:string, passwordHash: string) {
+        const updateUserHash = await usersCollection.updateOne({email}, {$set: {passwordHash: passwordHash}})
+        return updateUserHash.matchedCount === 1
     }
 }

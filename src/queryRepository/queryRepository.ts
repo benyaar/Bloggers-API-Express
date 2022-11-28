@@ -1,7 +1,7 @@
 import {
     bloggersCollection,
     commentsCollection,
-    postsCollection, tokenBlackListCollection,
+    postsCollection, recoveryCodeCollection, tokenBlackListCollection,
     usersCollection, usersSessionsCollection,
     videosCollection
 } from "../repository/db";
@@ -112,7 +112,10 @@ export const queryRepository = {
     },
     async findDeviceByUseId(userId:string){
         return usersSessionsCollection.findOne({userId})
+    },
+
+
+    findRecoveryCode(recoveryCode: string) {
+        return recoveryCodeCollection.findOne({recoveryCode})
     }
-
-
 }
