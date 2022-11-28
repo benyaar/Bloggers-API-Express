@@ -90,7 +90,7 @@ authRouter.post('/refresh-token', checkRefreshTokenMiddleWare, async (req:Reques
     const newTokenVerify = await JWTService.getDataByToken(createNewTokenPair.refreshToken)
     const getIatToken = newTokenVerify.iat * 1000
 
-    await userSessionsService.updateUserSessions(getTokenData.id, getTokenData.deviceId, getIatToken, ip, title )
+    await userSessionsService.updateUserSessions(getTokenData.userId, getTokenData.deviceId, getIatToken, ip, title )
     await JWTService.addRefreshTokenInBlackList(refreshToken)
 
     res.cookie('refreshToken', createNewTokenPair.refreshToken, {httpOnly:true, secure: true})
