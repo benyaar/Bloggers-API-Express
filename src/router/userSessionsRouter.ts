@@ -3,6 +3,7 @@ import {queryRepository} from "../queryRepository/queryRepository";
 import {userSessionsService} from "../domain/userSessionsService";
 import {checkRefreshTokenMiddleWare} from "../middleware/checkRefreshTokenMiddleWare";
 import {JWTService} from "../domain/JWTService";
+import {attemptsMiddleware} from "../middleware/attempsMiddleware";
 
 export const userSessionsRouter = Router({})
 
@@ -21,7 +22,7 @@ userSessionsRouter.get('/devices', checkRefreshTokenMiddleWare, async (req:Reque
 })
 
 
-userSessionsRouter.delete('/devices', checkRefreshTokenMiddleWare, async(req:Request, res:Response) =>{
+userSessionsRouter.delete('/devices', attemptsMiddleware, checkRefreshTokenMiddleWare, async(req:Request, res:Response) =>{
     const refreshToken =  req.cookies.refreshToken
     const getDataFromToken = await JWTService.getDataByToken(refreshToken)
     const userId = getDataFromToken.userId
