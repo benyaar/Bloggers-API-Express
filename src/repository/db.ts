@@ -3,7 +3,7 @@ import {
     AttemptsType,
     BlogDBType,
     CommentDBModalType,
-    PostDBType,
+    PostDBType, RecoveryCodeType,
     TokenType,
     UserDBType, UserSessionsType,
     VideoDBType
@@ -13,7 +13,7 @@ import {
     AttemptsModalScheme,
     BlogsDBModalScheme,
     CommentDBModalScheme,
-    PostDBModalScheme, TokenModalScheme,
+    PostDBModalScheme, RecoveryCodeScheme, TokenModalScheme,
     UserDBModalScheme, UserSessionsScheme,
     VideoModelScheme
 } from "../types/mongooseScheme";
@@ -31,6 +31,7 @@ export const commentsCollection = mongoose.model<CommentDBModalType>('comments',
 export const attemptsCollection = mongoose.model<AttemptsType>('attempts', AttemptsModalScheme)
 export const tokenBlackListCollection = mongoose.model<TokenType>('tokenBlackList', TokenModalScheme)
 export const usersSessionsCollection = mongoose.model<UserSessionsType>('userSessions', UserSessionsScheme)
+export const recoveryCodeCollection = mongoose.model<RecoveryCodeType>('recoveryCode', RecoveryCodeScheme )
 
 // export const videosCollection = db.collection<VideoDBType>("videos")
 // export const bloggersCollection = db.collection<BlogDBType>("blogs")

@@ -112,3 +112,8 @@ export type TokenPairType = {
     accessToken: string,
     refreshToken: string
 }
+
+export type RecoveryCodeType = {
+    email: string,
+    recoveryCode: string
+}

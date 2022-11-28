@@ -3,7 +3,7 @@ import {
     AttemptsType,
     BlogDBType,
     CommentDBModalType,
-    PostDBType,
+    PostDBType, RecoveryCodeType,
     TokenType,
     UserDBType,
     UserSessionsType,
@@ -75,11 +75,15 @@ export const TokenModalScheme = new mongoose.Schema<TokenType>({
     refreshToken: String
 })
 
+export const RecoveryCodeScheme = new mongoose.Schema<RecoveryCodeType>({
+    email: String,
+    recoveryCode: String
+})
+
 export const UserSessionsScheme = new mongoose.Schema<UserSessionsType>({
     ip: String,
     title: String,
     lastActiveDate: Date,
     deviceId: String,
     userId:String,
-
 })

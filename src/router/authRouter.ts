@@ -13,6 +13,7 @@ import {attemptsMiddleware} from "../middleware/attempsMiddleware";
 import {JWTService} from "../domain/JWTService";
 import {userSessionsService} from "../domain/userSessionsService";
 import {checkRefreshTokenMiddleWare} from "../middleware/checkRefreshTokenMiddleWare";
+import {emailService} from "../domain/emailService";
 
 export const authRouter = Router({})
 
@@ -106,5 +107,16 @@ authRouter.post('/logout', checkRefreshTokenMiddleWare, async (req:Request, res:
     const deleteTokenPair = await JWTService.addRefreshTokenInBlackList(refreshToken)
     if(!deleteTokenPair) return res.sendStatus(401)
      await userSessionsService.deleteDeviceByDeviceId(userId, deviceId)
+    res.sendStatus(204)
+})
+
+authRouter.post('/password-recovery', attemptsMiddleware, emailValidation, expressValidator, async (req:Request, res:Response)=>{
+    const email = req.body.email
+    if(!email) return res.sendStatus(404)
+
+    const findUserByEmail = await queryRepository.findUserByEmail(email)
+    if(!findUserByEmail) return res.sendStatus(404)
+    await authService.passwordRecovery(email)
+
     res.sendStatus(204)
 })
