@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken"
-import {UserDBType} from "../types/types";
+
 
 import {JWTRepository} from "../repository/JWTRepository";
 
@@ -17,8 +17,8 @@ export const JWTService = {
         }
     },
     async createJWTPair (userId: string, deviceId: string){
-        const accessToken = jwt.sign({userId: userId, deviceId: deviceId}, JWT_SECRET, {expiresIn: '100s'})
-        const refreshToken = jwt.sign({userId: userId, deviceId: deviceId}, JWT_SECRET, {expiresIn: '200s'})
+        const accessToken = jwt.sign({userId: userId, deviceId: deviceId}, JWT_SECRET, {expiresIn: '10s'})
+        const refreshToken = jwt.sign({userId: userId, deviceId: deviceId}, JWT_SECRET, {expiresIn: '20s'})
         return {accessToken, refreshToken}
     },
     async addRefreshTokenInBlackList(refreshToken: string){

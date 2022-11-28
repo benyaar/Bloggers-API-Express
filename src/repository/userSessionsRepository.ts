@@ -7,7 +7,7 @@ export const userSessionsRepository = {
         return usersSessionsCollection.insertMany(userSession)
     },
     async deleteAllDevice (userId:string, deviceId: string){
-        const deleteAllSessions = await usersSessionsCollection.deleteMany({userId, deviceId: {$ne: {deviceId}}})
+        const deleteAllSessions = await usersSessionsCollection.deleteMany({userId, deviceId: {$ne: deviceId}})
 
         return deleteAllSessions.deletedCount === 1
     },
