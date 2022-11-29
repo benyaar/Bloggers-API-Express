@@ -1,7 +1,7 @@
 import {Request, Response, Router} from "express";
 import {
     emailValidation,
-    expressValidator, passwordValidation,
+    expressValidator, passwordValidation, recoveryPasswordValidation,
     registrationValidation
 } from "../middleware/expressValidator";
 import {authService} from "../domain/authService";
@@ -120,12 +120,12 @@ authRouter.post('/password-recovery', attemptsMiddleware, emailValidation, expre
     res.sendStatus(204)
 })
 
-authRouter.post('/new-password', passwordValidation, expressValidator, async (req:Request, res:Response) =>{
+authRouter.post('/new-password', attemptsMiddleware, recoveryPasswordValidation, expressValidator, async (req:Request, res:Response) =>{
     const newPassword = req.body.newPassword
     const recoveryCode = req.body.recoveryCode
 
     const findRecoveryCode = await queryRepository.findRecoveryCode(recoveryCode)
-    if(!findRecoveryCode) return res.status(400).send({errorsMessages: [{message: "ErrorCode", field: "newPassword"}]})
+    if(!findRecoveryCode) return res.status(400).send({errorsMessages: [{message: "ErrorCode", field: "recoveryCode"}]})
 
    await authService.changePasswordRecovery(findRecoveryCode.email, newPassword)
     res.sendStatus(204)
