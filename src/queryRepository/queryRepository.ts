@@ -6,6 +6,7 @@ import {
     videosCollection
 } from "../repository/db";
 import {paginationResult} from "../helpers/pagination";
+import {commentWithLikeStatusCount} from "../helpers/commentLikeStatusCount";
 
 
 const options = {
@@ -93,30 +94,17 @@ export const queryRepository = {
             .skip((pageNumber - 1) * pageSize)
             .limit(pageSize)
 
-        let postsWithCommentLikesInfo = []
-        for await (let comment of findAndSortedComments){
-            const countLikes = await likeStatusCollection.countDocuments({commentId: comment.id, likeStatus:"Like"})
-            const countDislikes = await likeStatusCollection.countDocuments({commentId: comment.id, likeStatus:"Dislike"})
-
-            const findCommentWithLikesByUserId = await likeStatusCollection.findOne({commentId: comment.id, userId})
-
-            comment.likesInfo.likesCount = countLikes
-            comment.likesInfo.dislikesCount = countDislikes
-            if(findCommentWithLikesByUserId){
-                comment.likesInfo.myStatus = findCommentWithLikesByUserId.likeStatus
-            } else {
-                comment.likesInfo.myStatus = "None"
-            }
-
-            postsWithCommentLikesInfo.push(comment)
-        }
-
-
+       const getCommentsWithLikeStatus = await commentWithLikeStatusCount (findAndSortedComments, userId)
         const getCountUsers = await commentsCollection.countDocuments({postId})
-        return paginationResult(pageNumber, pageSize, getCountUsers, postsWithCommentLikesInfo)
+        return paginationResult(pageNumber, pageSize, getCountUsers, getCommentsWithLikeStatus)
+    },
+    async getCommentByIdWithLikes(id: string, userId: string | undefined){
+        const getComment = await commentsCollection.find({id}, options)
+        const commentWithLikeStatus = await commentWithLikeStatusCount(getComment, userId)
+        return commentWithLikeStatus[0]
     },
     async getCommentById(id: string){
-        return commentsCollection.findOne({id}, options)
+         return commentsCollection.findOne({id}, options)
     },
     async findUserByCode(code:string){
         return usersCollection.findOne({'emailConfirmation.confirmationCode':code})

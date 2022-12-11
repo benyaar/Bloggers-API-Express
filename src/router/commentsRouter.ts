@@ -1,6 +1,6 @@
 import {Response, Request, Router} from "express";
 import {queryRepository} from "../queryRepository/queryRepository";
-import {bearerAuthMiddleWare} from "../middleware/bearerAuthMiddleWare";
+import {bearerAuthMiddleWare, сheckBearerAuthMiddleWare} from "../middleware/bearerAuthMiddleWare";
 import {commentsContentValidation, expressValidator, likeStatusValidation} from "../middleware/expressValidator";
 import {commentsService} from "../domain/commentsService";
 
@@ -8,9 +8,10 @@ import {commentsService} from "../domain/commentsService";
 
 export const  commentsRouter = Router({})
 
-commentsRouter.get('/:commentId', async (req:Request, res:Response) => {
+commentsRouter.get('/:commentId', сheckBearerAuthMiddleWare, async (req:Request, res:Response) => {
     const commentId = req.params.commentId
-    const getCommentById = await queryRepository.getCommentById(commentId)
+    const userId = req.user?.id
+    const getCommentById = await queryRepository.getCommentByIdWithLikes(commentId, userId )
     if(!getCommentById) return res.sendStatus(404)
     res.status(200).send(getCommentById)
 })
