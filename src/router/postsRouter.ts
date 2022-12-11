@@ -9,7 +9,7 @@ import {
     shortDescriptionPostValidation,
     titlePostValidation
 } from "../middleware/expressValidator";
-import {bearerAuthMiddleWare} from "../middleware/bearerAuthMiddleWare";
+import {bearerAuthMiddleWare, сheckBearerAuthMiddleWare} from "../middleware/bearerAuthMiddleWare";
 import {commentsService} from "../domain/commentsService";
 
 
@@ -22,7 +22,6 @@ postsRouter.post("/", basicAuthMiddleware, blogIdValidation, titlePostValidation
     const content = req.body.content
     const blogId = req.body.blogId
         const user = req.user?.login
-        console.log(user)
 
     const findBlogById = await queryRepository.getBlogById(blogId)
     if(!findBlogById){
@@ -87,6 +86,7 @@ postsRouter.post('/:id/comments', bearerAuthMiddleWare, commentsContentValidatio
     const content = req.body.content
     const user = req.user!
 
+
     const findPostById = await queryRepository.getPostById(post)
     if(!findPostById) return res.sendStatus(404)
     const createNewComment = await commentsService.createNewComments(content, user, post)
@@ -95,18 +95,20 @@ postsRouter.post('/:id/comments', bearerAuthMiddleWare, commentsContentValidatio
     res.status(201).send(newCommentCopy)
 
 })
-postsRouter.get('/:id/comments', paginationValidation, async (req:Request, res:Response) => {
+postsRouter.get('/:id/comments', сheckBearerAuthMiddleWare, paginationValidation, async (req:Request, res:Response) => {
     const postId = req.params.id
     const pageNumber:any = req.query.pageNumber
     const pageSize:any = req.query.pageSize
     const sortBy:any = req.query.sortBy
     let sortDirection = req.query.sortDirection
     if (sortDirection !== ('asc' || 'desc')) sortDirection = 'desc'
+    const userId = req.user?.id
 
     const findPostById = await queryRepository.getPostById(postId)
     if(!findPostById) return res.sendStatus(404)
 
-    const findAllCommentsByPost = await queryRepository.findAllCommentsByPost(pageNumber,pageSize, sortBy, sortDirection, postId)
+    const findAllCommentsByPost = await queryRepository.findAllCommentsByPost(pageNumber,pageSize, sortBy, sortDirection, postId, userId)
+
 
 
     res.status(200).send(findAllCommentsByPost)

@@ -1,8 +1,9 @@
 import {Response, Request, Router} from "express";
 import {queryRepository} from "../queryRepository/queryRepository";
 import {bearerAuthMiddleWare} from "../middleware/bearerAuthMiddleWare";
-import {commentsContentValidation, expressValidator} from "../middleware/expressValidator";
+import {commentsContentValidation, expressValidator, likeStatusValidation} from "../middleware/expressValidator";
 import {commentsService} from "../domain/commentsService";
+
 
 
 export const  commentsRouter = Router({})
@@ -36,5 +37,19 @@ commentsRouter.delete('/:commentId',bearerAuthMiddleWare, async (req:Request, re
 
     const deleteComment = await commentsService.deleteComment(commentId, user)
     if(!deleteComment) return res.sendStatus(403)
+    res.sendStatus(204)
+})
+
+commentsRouter.put('/:commentId/like-status', bearerAuthMiddleWare, likeStatusValidation, expressValidator,  async (req: Request, res: Response) => {
+    const user = req.user!
+    const commentId = req.params.commentId
+    const likeStatus = req.body.likeStatus
+
+    const getCommentById = await queryRepository.getCommentById(commentId)
+    if(!getCommentById) return res.sendStatus(404)
+
+    await commentsService.addLikeStatusForComment(commentId, user.id, likeStatus)
+
+
     res.sendStatus(204)
 })

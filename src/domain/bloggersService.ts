@@ -5,14 +5,14 @@ import {postsService} from "./postsService";
 
 export const bloggersService = {
    async createNewBlog (name: string, description: string, websiteUrl: string) {
-        const newBlogger:BlogDBType = {
-            _id: new ObjectId(),
-            id: new ObjectId().toString(),
+        const newBlogger = new BlogDBType(
+            new ObjectId(),
+            new ObjectId().toString(),
             name,
             description,
             websiteUrl,
-            createdAt: new Date(),
-        }
+            new Date()
+            )
         await bloggersRepository.createNewBlog(newBlogger)
         return newBlogger
     },

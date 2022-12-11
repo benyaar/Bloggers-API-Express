@@ -50,6 +50,8 @@ export const recoveryPasswordValidation = body('newPassword').trim().isLength({m
 
 export const commentsContentValidation = body("content").trim().isLength({min:20, max:300})
 
+export const likeStatusValidation = body('likeStatus').trim().isIn(["None", "Like", "Dislike"])
+
 export const availableResolutionsValidation = (req:Request, res:Response, next:NextFunction) => {
     const availableResolutions = req.body.availableResolutions
 

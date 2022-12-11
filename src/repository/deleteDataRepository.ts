@@ -2,7 +2,7 @@
 import {
     attemptsCollection,
     bloggersCollection,
-    commentsCollection,
+    commentsCollection, likeStatusCollection,
     postsCollection, tokenBlackListCollection,
     usersCollection, usersSessionsCollection,
     videosCollection
@@ -18,6 +18,7 @@ export const deleteDataRepository = {
         await attemptsCollection.deleteMany({})
         await tokenBlackListCollection.deleteMany({})
         await usersSessionsCollection.deleteMany({})
+        await likeStatusCollection.deleteMany({})
         return true
     }
 }

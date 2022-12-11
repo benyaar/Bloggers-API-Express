@@ -1,6 +1,9 @@
 import {CommentDBModalType, UserDBType} from "../types/types";
 import {ObjectId} from "mongodb";
 import {commentsRepository} from "../repository/commentsRepository";
+import {postsRepository} from "../repository/postsRepository";
+import {queryRepository} from "../queryRepository/queryRepository";
+import {likeStatusRepository} from "../repository/likeStatusRepository";
 
 
 export const commentsService = {
@@ -12,7 +15,12 @@ export const commentsService = {
             userId: user.id,
             userLogin: user.login,
             createdAt: new Date(),
-            postId: postId
+            postId: postId,
+            likesInfo: {
+                likesCount: 0,
+                dislikesCount: 0,
+                myStatus: "None"
+            },
         }
         await commentsRepository.createNewComments(newComment)
         return newComment
@@ -23,5 +31,12 @@ export const commentsService = {
     },
     async deleteComment (id: string, user: UserDBType){
         return commentsRepository.deleteComment(id, user)
-    }
+    },
+    async addLikeStatusForComment(commentId: string, userId: string, likeStatus:string) {
+        return  likeStatusRepository.createCommentLikeStatus(commentId, userId, likeStatus)
+
+    },
+    // async deleteLikeStatus(userId:string, commentId:string){
+    //     return commentsRepository.deleteLikeStatus(userId, commentId)
+    // }
 }

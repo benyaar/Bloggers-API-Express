@@ -17,8 +17,8 @@ export const JWTService = {
         }
     },
     async createJWTPair (userId: string, deviceId: string){
-        const accessToken = jwt.sign({userId: userId, deviceId: deviceId}, JWT_SECRET, {expiresIn: '10s'})
-        const refreshToken = jwt.sign({userId: userId, deviceId: deviceId}, JWT_SECRET, {expiresIn: '20s'})
+        const accessToken = jwt.sign({userId: userId, deviceId: deviceId}, JWT_SECRET, {expiresIn: '1000s'})
+        const refreshToken = jwt.sign({userId: userId, deviceId: deviceId}, JWT_SECRET, {expiresIn: '2000s'})
         return {accessToken, refreshToken}
     },
     async addRefreshTokenInBlackList(refreshToken: string){

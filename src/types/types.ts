@@ -13,13 +13,25 @@ export type VideoDBType = {
 }
 
 
-export type BlogDBType = {
-    _id: ObjectId,
-    id: string,
-    name: string,
-    description: string,
-    websiteUrl: string
-    createdAt: Date,
+// export type BlogDBType = {
+//     _id: ObjectId,
+//     id: string,
+//     name: string,
+//     description: string,
+//     websiteUrl: string
+//     createdAt: Date,
+// }
+
+export class BlogDBType {
+    constructor(
+        public _id: ObjectId,
+        public id: string,
+        public name: string,
+        public description: string,
+        public websiteUrl: string,
+        public  createdAt: Date,
+    ) {
+    }
 }
 
 export type BlogViewModelType = WithoutId<BlogDBType>
@@ -74,14 +86,25 @@ export type CommentDBModalType = {
     userId: string,
     userLogin: string,
     createdAt: Date,
-    postId: string
+    postId: string,
+    likesInfo: {
+        likesCount: number,
+        dislikesCount: number,
+        myStatus: string
+    },
 }
+
 export type CommentViewModalType = {
     id: string,
     content: string,
     userId: string,
     userLogin: string,
-    createdAt: Date
+    createdAt: Date,
+    likesInfo: {
+        likesCount: number,
+        dislikesCount: number,
+        myStatus: string
+    },
 }
 
 export type UserAboutInfoType = {
@@ -117,3 +140,11 @@ export type RecoveryCodeType = {
     email: string,
     recoveryCode: string
 }
+
+export type CommentLikeStatus = {
+    commentId: string,
+    userId:string,
+    likeStatus: string,
+}
+
+

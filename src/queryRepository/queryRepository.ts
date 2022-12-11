@@ -1,18 +1,21 @@
 import {
     bloggersCollection,
-    commentsCollection,
+    commentsCollection, likeStatusCollection,
     postsCollection, recoveryCodeCollection, tokenBlackListCollection,
     usersCollection, usersSessionsCollection,
     videosCollection
 } from "../repository/db";
 import {paginationResult} from "../helpers/pagination";
 
+
 const options = {
         _id:0,
         passwordHash:0,
         postId:0,
         emailConfirmation:0,
-        __v:0
+        __v:0,
+       // likesList: 0,
+        //dislikesList: 0
 }
 
 const optionsForUserSessions ={
@@ -83,14 +86,34 @@ export const queryRepository = {
     async findUserByLoginOrEmail(loginOrEmail:string){
         return usersCollection.findOne(({$or : [{login:loginOrEmail}, {email: loginOrEmail}]}))
     },
-    async findAllCommentsByPost (pageNumber:number, pageSize:number, sortBy:any, sortDirection:any, postId: string){
+    async findAllCommentsByPost (pageNumber:number, pageSize:number, sortBy:any, sortDirection:any, postId: string, userId:string | undefined){
         const findAndSortedComments = await commentsCollection
             .find({postId}, options)
             .sort({[sortBy]: sortDirection})
             .skip((pageNumber - 1) * pageSize)
             .limit(pageSize)
+
+        let postsWithCommentLikesInfo = []
+        for await (let comment of findAndSortedComments){
+            const countLikes = await likeStatusCollection.countDocuments({commentId: comment.id, likeStatus:"Like"})
+            const countDislikes = await likeStatusCollection.countDocuments({commentId: comment.id, likeStatus:"Dislike"})
+
+            const findCommentWithLikesByUserId = await likeStatusCollection.findOne({commentId: comment.id, userId})
+
+            comment.likesInfo.likesCount = countLikes
+            comment.likesInfo.dislikesCount = countDislikes
+            if(findCommentWithLikesByUserId){
+                comment.likesInfo.myStatus = findCommentWithLikesByUserId.likeStatus
+            } else {
+                comment.likesInfo.myStatus = "None"
+            }
+
+            postsWithCommentLikesInfo.push(comment)
+        }
+
+
         const getCountUsers = await commentsCollection.countDocuments({postId})
-        return paginationResult(pageNumber, pageSize, getCountUsers, findAndSortedComments)
+        return paginationResult(pageNumber, pageSize, getCountUsers, postsWithCommentLikesInfo)
     },
     async getCommentById(id: string){
         return commentsCollection.findOne({id}, options)
@@ -113,8 +136,6 @@ export const queryRepository = {
     async findDeviceByUseId(userId:string){
         return usersSessionsCollection.findOne({userId})
     },
-
-
     findRecoveryCode(recoveryCode: string) {
         return recoveryCodeCollection.findOne({recoveryCode})
     }

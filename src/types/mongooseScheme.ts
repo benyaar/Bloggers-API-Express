@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import {
     AttemptsType,
     BlogDBType,
-    CommentDBModalType,
+    CommentDBModalType, CommentLikeStatus,
     PostDBType, RecoveryCodeType,
     TokenType,
     UserDBType,
@@ -62,7 +62,12 @@ export const CommentDBModalScheme = new mongoose.Schema<CommentDBModalType>({
     userId: String,
     userLogin: String,
     createdAt: Date,
-    postId: String
+    postId: String,
+    likesInfo: {
+        likesCount: Number,
+        dislikesCount: Number,
+        myStatus: String
+    },
 })
 
 export const AttemptsModalScheme = new mongoose.Schema<AttemptsType>({
@@ -86,4 +91,10 @@ export const UserSessionsScheme = new mongoose.Schema<UserSessionsType>({
     lastActiveDate: Date,
     deviceId: String,
     userId:String,
+})
+
+export const CommentLikeStatusScheme = new mongoose.Schema<CommentLikeStatus>({
+    commentId: String,
+    userId:String,
+    likeStatus: String,
 })
