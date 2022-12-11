@@ -8,6 +8,6 @@ export const likeStatusRepository = {
             userId,
             likeStatus,
         }
-        return likeStatusCollection.findOneAndUpdate({userId},{...commentLikeStatus}, {upsert:true})
+        return likeStatusCollection.findOneAndUpdate({commentId, userId},{...commentLikeStatus}, {upsert:true})
     }
 }
