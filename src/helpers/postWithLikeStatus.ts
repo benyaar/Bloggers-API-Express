@@ -10,7 +10,7 @@ export const postWithLikeStatus = async (findAndSortedPost: any, userId: string 
         const findPostWithLikesByUserId = await likeStatusCollection.findOne({parentId: post.id, userId})
         const findNewestPost = await likeStatusCollection.find({
             parentId: post.id,
-            status: 'Like'
+            likeStatus: 'Like'
         }, {_id:0, __v: 0, parentId: 0, likeStatus:0 }, {sort: {_id: -1}, limit: 3})
 
 
