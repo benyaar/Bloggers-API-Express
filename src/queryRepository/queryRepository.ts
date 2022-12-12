@@ -59,14 +59,15 @@ export const queryRepository = {
     async getPostById (id:string) {
         return postsCollection.findOne({id}, options)
     },
-    async findBlogPosts (id:string, searchNameTerm: string, pageNumber:number, pageSize:number, sortBy:any, sortDirection:any  ) {
+    async findBlogPosts (id:string, searchNameTerm: string, pageNumber:number, pageSize:number, sortBy:any, sortDirection:any, userId:string | undefined  ) {
         const findAndSortedPosts = await postsCollection
             .find({ title: { $regex : searchNameTerm , $options : "i"}, blogId: id}, options)
             .sort({[sortBy]: sortDirection})
             .skip((pageNumber - 1) * pageSize)
             .limit(pageSize)
         const getCountPosts = await postsCollection.countDocuments({ title: { $regex : searchNameTerm , $options : "i"}, blogId: id})
-        return paginationResult(pageNumber, pageSize, getCountPosts, findAndSortedPosts)
+        const postWithLikes = await postWithLikeStatus(findAndSortedPosts, userId)
+        return paginationResult(pageNumber, pageSize, getCountPosts, postWithLikes)
     },
 
     async getAllUsers(pageNumber:number, pageSize:number, sortBy:any, sortDirection:any,

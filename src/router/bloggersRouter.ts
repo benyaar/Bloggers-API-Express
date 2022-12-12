@@ -9,6 +9,7 @@ import {
     titlePostValidation,
 } from "../middleware/expressValidator";
 import {basicAuthMiddleware} from "../middleware/basicAuthMiddleware";
+import {checkBearerAuthMiddleWare} from "../middleware/bearerAuthMiddleWare";
 
 
 export const bloggersRouter = Router({})
@@ -80,8 +81,9 @@ bloggersRouter.post('/:id/posts', basicAuthMiddleware, titlePostValidation, shor
     res.status(201).send(newCreatePostCopy)
 })
 
-bloggersRouter.get('/:id/posts', paginationValidation, async (req: Request, res: Response) => {
+bloggersRouter.get('/:id/posts',checkBearerAuthMiddleWare, paginationValidation, async (req: Request, res: Response) => {
     const blogId = req.params.id
+    const userId = req.user?.id
     const searchNameTerm: any = req.query.searchNameTerm
     const pageNumber: any = req.query.pageNumber
     const pageSize: any = req.query.pageSize
@@ -93,6 +95,6 @@ bloggersRouter.get('/:id/posts', paginationValidation, async (req: Request, res:
     const findBlog = await queryRepository.getBlogById(blogId)
     if (!findBlog) return res.sendStatus(404)
 
-    const findBlogPosts = await queryRepository.findBlogPosts(blogId, searchNameTerm, pageNumber, pageSize, sortBy, sortDirection)
+    const findBlogPosts = await queryRepository.findBlogPosts(blogId, searchNameTerm, pageNumber, pageSize, sortBy, sortDirection, userId)
     res.status(200).send(findBlogPosts)
 })
