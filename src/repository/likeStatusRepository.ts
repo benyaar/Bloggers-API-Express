@@ -7,7 +7,7 @@ export const likeStatusRepository = {
             parentId: commentId,
             userId,
             login,
-            createdAt: new Date(),
+            addedAt: new Date(),
             likeStatus,
         }
         return likeStatusCollection.findOneAndUpdate({parentId: commentId, userId},{...commentLikeStatus}, {upsert:true})

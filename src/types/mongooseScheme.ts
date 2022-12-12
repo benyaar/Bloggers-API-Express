@@ -102,5 +102,7 @@ export const UserSessionsScheme = new mongoose.Schema<UserSessionsType>({
 export const LikeStatusScheme = new mongoose.Schema<LikeStatus>({
     parentId: String,
     userId:String,
+    login: String,
     likeStatus: String,
+    addedAt: Date,
 })

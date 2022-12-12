@@ -152,7 +152,7 @@ export type LikeStatus = {
     userId:string,
     login: string
     likeStatus: string,
-    createdAt: Date,
+    addedAt: Date,
 
 }
 

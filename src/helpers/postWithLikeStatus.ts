@@ -1,4 +1,5 @@
 import {likeStatusCollection} from "../repository/db";
+import {LikeStatus} from "../types/types";
 
 
 export const postWithLikeStatus = async (findAndSortedPost: any, userId: string | undefined) => {
@@ -10,7 +11,8 @@ export const postWithLikeStatus = async (findAndSortedPost: any, userId: string 
         const findNewestPost = await likeStatusCollection.find({
             parentId: post.id,
             status: 'Like'
-        }, {_id:0, __v: 0 }, {sort: {_id: -1}, limit: 3})
+        }, {_id:0, __v: 0, parentId: 0, likeStatus:0 }, {sort: {_id: -1}, limit: 3})
+
 
         post.extendedLikesInfo.likesCount = countLikes
         post.extendedLikesInfo.dislikesCount = countDislikes
@@ -19,7 +21,7 @@ export const postWithLikeStatus = async (findAndSortedPost: any, userId: string 
         if(findPostWithLikesByUserId){
             post.extendedLikesInfo.myStatus = findPostWithLikesByUserId.likeStatus
         } else {
-            post.likesInfo.myStatus = "None"
+            post.extendedLikesInfo.myStatus = "None"
         }
 
         postWithLikeStatus.push(post)
