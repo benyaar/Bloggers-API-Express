@@ -7,6 +7,7 @@ import {
 } from "../repository/db";
 import {paginationResult} from "../helpers/pagination";
 import {commentWithLikeStatusCount} from "../helpers/commentLikeStatusCount";
+import {postWithLikeStatus} from "../helpers/postWithLikeStatus";
 
 
 const options = {
@@ -41,19 +42,19 @@ export const queryRepository = {
         const getCountBlogs = await bloggersCollection.countDocuments({name: { $regex : searchNameTerm , $options : "i"}})
         return paginationResult(pageNumber, pageSize, getCountBlogs, findAndSortedBlogs)
     },
-
     async getBlogById(id: string) {
         return bloggersCollection.findOne({id}, options)
     },
-    async getAllPosts (searchNameTerm: string, pageNumber:number, pageSize:number, sortBy:any, sortDirection:any) {
+    async getAllPosts (searchNameTerm: string, pageNumber:number, pageSize:number, sortBy:any, sortDirection:any, userId: string | undefined) {
         const findAndSortedPosts =  await postsCollection
             .find({title: {$regex: searchNameTerm}}, options)
             .sort({[sortBy]: sortDirection})
             .skip((pageNumber - 1) * pageSize)
             .limit(pageSize)
-
         const getCountPosts = await postsCollection.countDocuments()
-        return paginationResult(pageNumber, pageSize, getCountPosts, findAndSortedPosts)
+        const postWithLikes = await postWithLikeStatus(findAndSortedPosts, userId)
+
+        return paginationResult(pageNumber, pageSize, getCountPosts, postWithLikes)
     },
     async getPostById (id:string) {
         return postsCollection.findOne({id}, options)

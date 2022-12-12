@@ -1,14 +1,15 @@
 import {Response, Request, Router} from "express";
 import {queryRepository} from "../queryRepository/queryRepository";
-import {bearerAuthMiddleWare, сheckBearerAuthMiddleWare} from "../middleware/bearerAuthMiddleWare";
+import {bearerAuthMiddleWare, checkBearerAuthMiddleWare} from "../middleware/bearerAuthMiddleWare";
 import {commentsContentValidation, expressValidator, likeStatusValidation} from "../middleware/expressValidator";
 import {commentsService} from "../domain/commentsService";
+import {likeStatusService} from "../domain/likeStatusService";
 
 
 
 export const  commentsRouter = Router({})
 
-commentsRouter.get('/:commentId', сheckBearerAuthMiddleWare, async (req:Request, res:Response) => {
+commentsRouter.get('/:commentId', checkBearerAuthMiddleWare, async (req:Request, res:Response) => {
     const commentId = req.params.commentId
     const userId = req.user?.id
     const getCommentById = await queryRepository.getCommentByIdWithLikes(commentId, userId )
@@ -49,7 +50,7 @@ commentsRouter.put('/:commentId/like-status', bearerAuthMiddleWare, likeStatusVa
     const getCommentById = await queryRepository.getCommentById(commentId)
     if(!getCommentById) return res.sendStatus(404)
 
-    await commentsService.addLikeStatusForComment(commentId, user.id, likeStatus)
+    await likeStatusService.addLikeStatus(commentId, user.id, likeStatus)
 
 
     res.sendStatus(204)

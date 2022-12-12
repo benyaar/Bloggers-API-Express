@@ -1,7 +1,7 @@
 import {
     AttemptsType,
     BlogDBType,
-    CommentDBModalType, CommentLikeStatus,
+    CommentDBModalType, LikeStatus,
     PostDBType, RecoveryCodeType,
     TokenType,
     UserDBType, UserSessionsType,
@@ -11,15 +11,15 @@ import * as mongoose from "mongoose";
 import {
     AttemptsModalScheme,
     BlogsDBModalScheme,
-    CommentDBModalScheme, CommentLikeStatusScheme,
+    CommentDBModalScheme, LikeStatusScheme,
     PostDBModalScheme, RecoveryCodeScheme, TokenModalScheme,
     UserDBModalScheme, UserSessionsScheme,
     VideoModelScheme
 } from "../types/mongooseScheme";
 
-const mongoURI = process.env.mongoURI || "mongodb+srv://admin:admin@backapi.wojaaxk.mongodb.net/?retryWrites=true&w=majority";
+//const mongoURI = process.env.mongoURI || "mongodb+srv://admin:admin@backapi.wojaaxk.mongodb.net/?retryWrites=true&w=majority";
 
-//const mongoURI = process.env.mongoURI || "mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.5.1";
+const mongoURI = process.env.mongoURI || "mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.5.1";
 
 
 export const videosCollection =  mongoose.model<VideoDBType>('videos', VideoModelScheme)
@@ -31,7 +31,7 @@ export const attemptsCollection = mongoose.model<AttemptsType>('attempts', Attem
 export const tokenBlackListCollection = mongoose.model<TokenType>('tokenBlackList', TokenModalScheme)
 export const usersSessionsCollection = mongoose.model<UserSessionsType>('userSessions', UserSessionsScheme)
 export const recoveryCodeCollection = mongoose.model<RecoveryCodeType>('recoveryCode', RecoveryCodeScheme )
-export const likeStatusCollection = mongoose.model<CommentLikeStatus>('likeStatus', CommentLikeStatusScheme)
+export const likeStatusCollection = mongoose.model<LikeStatus>('likeStatus', LikeStatusScheme)
 
 // export const videosCollection = db.collection<VideoDBType>("videos")
 // export const bloggersCollection = db.collection<BlogDBType>("blogs")

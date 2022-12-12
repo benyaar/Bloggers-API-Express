@@ -15,7 +15,7 @@ export const bearerAuthMiddleWare = async (req: Request, res:Response, next:Next
     return  next()
 }
 
-export const сheckBearerAuthMiddleWare = async (req: Request, res:Response, next:NextFunction) => {
+export const checkBearerAuthMiddleWare = async (req: Request, res:Response, next:NextFunction) => {
     if(!req.headers.authorization) return next()
     const token = req.headers.authorization.split(' ')[1]
     const getUserByToken = await JWTService.getDataByToken(token)

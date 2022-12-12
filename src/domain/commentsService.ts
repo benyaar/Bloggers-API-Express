@@ -32,10 +32,7 @@ export const commentsService = {
     async deleteComment (id: string, user: UserDBType){
         return commentsRepository.deleteComment(id, user)
     },
-    async addLikeStatusForComment(commentId: string, userId: string, likeStatus:string) {
-        return  likeStatusRepository.createCommentLikeStatus(commentId, userId, likeStatus)
 
-    },
     // async deleteLikeStatus(userId:string, commentId:string){
     //     return commentsRepository.deleteLikeStatus(userId, commentId)
     // }

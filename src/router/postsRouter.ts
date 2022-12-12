@@ -5,12 +5,17 @@ import {basicAuthMiddleware} from "../middleware/basicAuthMiddleware";
 import {
     blogIdValidation, commentsContentValidation,
     contentValidation,
-    expressValidator, paginationValidation,
+    expressValidator, likeStatusValidation, paginationValidation,
     shortDescriptionPostValidation,
     titlePostValidation
 } from "../middleware/expressValidator";
-import {bearerAuthMiddleWare, сheckBearerAuthMiddleWare} from "../middleware/bearerAuthMiddleWare";
+import {
+    bearerAuthMiddleWare,
+    checkBearerAuthMiddleWare,
+} from "../middleware/bearerAuthMiddleWare";
 import {commentsService} from "../domain/commentsService";
+
+import {likeStatusService} from "../domain/likeStatusService";
 
 
 export const postsRouter = Router({})
@@ -40,7 +45,8 @@ postsRouter.post("/", basicAuthMiddleware, blogIdValidation, titlePostValidation
     const {_id, ...createNewPostCopy} = createNewPost
     res.status(201).send(createNewPostCopy)
 })
-postsRouter.get("/", paginationValidation, async (req:Request, res:Response) =>{
+postsRouter.get("/", checkBearerAuthMiddleWare, paginationValidation, async (req:Request, res:Response) =>{
+    const userId = req.user?.id
     const searchNameTerm:any = req.query.searchNameTerm
     const pageNumber:any = req.query.pageNumber
     const pageSize:any = req.query.pageSize
@@ -48,7 +54,7 @@ postsRouter.get("/", paginationValidation, async (req:Request, res:Response) =>{
     let sortDirection = req.query.sortDirection
     if (sortDirection !== ('asc' || 'desc')) sortDirection = 'desc'
 
-    const findPosts = await queryRepository.getAllPosts(searchNameTerm, pageNumber, pageSize, sortBy, sortDirection)
+    const findPosts = await queryRepository.getAllPosts(searchNameTerm, pageNumber, pageSize, sortBy, sortDirection, userId)
     res.status(200).send(findPosts)
 
 })
@@ -95,7 +101,7 @@ postsRouter.post('/:id/comments', bearerAuthMiddleWare, commentsContentValidatio
     res.status(201).send(newCommentCopy)
 
 })
-postsRouter.get('/:id/comments', сheckBearerAuthMiddleWare, paginationValidation, async (req:Request, res:Response) => {
+postsRouter.get('/:id/comments', checkBearerAuthMiddleWare, paginationValidation, async (req:Request, res:Response) => {
     const postId = req.params.id
     const pageNumber:any = req.query.pageNumber
     const pageSize:any = req.query.pageSize
@@ -113,4 +119,18 @@ postsRouter.get('/:id/comments', сheckBearerAuthMiddleWare, paginationValidatio
 
     res.status(200).send(findAllCommentsByPost)
 
+})
+
+postsRouter.put('/:postId/like-status', bearerAuthMiddleWare, likeStatusValidation, expressValidator,  async (req: Request, res: Response) => {
+    const user = req.user!
+    const postId = req.params.postId
+    const likeStatus = req.body.likeStatus
+
+    const getPostById = await queryRepository.getPostById(postId)
+    if(!getPostById) return res.sendStatus(404)
+
+    await likeStatusService.addLikeStatus(postId, user.id, likeStatus)
+
+
+    res.sendStatus(204)
 })

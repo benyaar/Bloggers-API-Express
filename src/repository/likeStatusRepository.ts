@@ -1,13 +1,13 @@
 import {likeStatusCollection} from "./db";
-import {CommentLikeStatus} from "../types/types";
+import {LikeStatus} from "../types/types";
 
 export const likeStatusRepository = {
     async createCommentLikeStatus(commentId: string, userId:string, likeStatus:string) {
-        const commentLikeStatus: CommentLikeStatus = {
-            commentId,
+        const commentLikeStatus: LikeStatus = {
+            parentId: commentId,
             userId,
             likeStatus,
         }
-        return likeStatusCollection.findOneAndUpdate({commentId, userId},{...commentLikeStatus}, {upsert:true})
+        return likeStatusCollection.findOneAndUpdate({parentId: commentId, userId},{...commentLikeStatus}, {upsert:true})
     }
 }

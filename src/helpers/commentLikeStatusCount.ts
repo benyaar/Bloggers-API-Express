@@ -5,10 +5,10 @@ import {CommentDBModalType, CommentViewModalType} from "../types/types";
 export const commentWithLikeStatusCount = async (findAndSortedComments: any, userId: string | undefined) => {
     let postsWithCommentLikesInfo = []
     for  (let comment of findAndSortedComments){
-        const countLikes = await likeStatusCollection.countDocuments({commentId: comment.id, likeStatus:"Like"})
-        const countDislikes = await likeStatusCollection.countDocuments({commentId: comment.id, likeStatus:"Dislike"})
+        const countLikes = await likeStatusCollection.countDocuments({parentId: comment.id, likeStatus:"Like"})
+        const countDislikes = await likeStatusCollection.countDocuments({parentId: comment.id, likeStatus:"Dislike"})
 
-        const findCommentWithLikesByUserId = await likeStatusCollection.findOne({commentId: comment.id, userId})
+        const findCommentWithLikesByUserId = await likeStatusCollection.findOne({parentId: comment.id, userId})
 
         comment.likesInfo.likesCount = countLikes
         comment.likesInfo.dislikesCount = countDislikes
