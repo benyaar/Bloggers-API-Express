@@ -26,7 +26,6 @@ postsRouter.post("/", basicAuthMiddleware, blogIdValidation, titlePostValidation
     const shortDescription = req.body.shortDescription
     const content = req.body.content
     const blogId = req.body.blogId
-        const user = req.user?.login
 
     const findBlogById = await queryRepository.getBlogById(blogId)
     if(!findBlogById){
@@ -131,7 +130,7 @@ postsRouter.put('/:postId/like-status', bearerAuthMiddleWare, likeStatusValidati
     const getPostById = await queryRepository.getPostById(postId)
     if(!getPostById) return res.sendStatus(404)
 
-    await likeStatusService.addLikeStatus(postId, user.id, likeStatus)
+    await likeStatusService.addLikeStatus(postId, user.id, user.login, likeStatus)
 
 
     res.sendStatus(204)

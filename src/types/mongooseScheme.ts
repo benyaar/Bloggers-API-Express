@@ -40,6 +40,12 @@ export const  PostDBModalScheme = new mongoose.Schema<PostDBType>({
     blogId: String,
     blogName: String,
     createdAt: Date,
+    extendedLikesInfo: {
+        likesCount: Number,
+        dislikesCount: Number,
+        myStatus: String,
+        newestLikes: []
+    }
 })
 
 export const UserDBModalScheme = new mongoose.Schema<UserDBType>({

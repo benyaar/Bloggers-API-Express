@@ -45,7 +45,7 @@ export type PostDBType = {
     blogId: string,
     blogName: string,
     createdAt: Date,
-    "extendedLikesInfo": {
+    extendedLikesInfo: {
         likesCount: number,
         dislikesCount: number,
         myStatus: string,
@@ -150,7 +150,10 @@ export type RecoveryCodeType = {
 export type LikeStatus = {
     parentId: string,
     userId:string,
+    login: string
     likeStatus: string,
+    createdAt: Date,
+
 }
 
 

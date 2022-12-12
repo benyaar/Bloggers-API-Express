@@ -50,7 +50,7 @@ commentsRouter.put('/:commentId/like-status', bearerAuthMiddleWare, likeStatusVa
     const getCommentById = await queryRepository.getCommentById(commentId)
     if(!getCommentById) return res.sendStatus(404)
 
-    await likeStatusService.addLikeStatus(commentId, user.id, likeStatus)
+    await likeStatusService.addLikeStatus(commentId, user.id, user.login, likeStatus)
 
 
     res.sendStatus(204)

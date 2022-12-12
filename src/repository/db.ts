@@ -17,9 +17,9 @@ import {
     VideoModelScheme
 } from "../types/mongooseScheme";
 
-const mongoURI = process.env.mongoURI || "mongodb+srv://admin:admin@backapi.wojaaxk.mongodb.net/?retryWrites=true&w=majority";
+//const mongoURI = process.env.mongoURI || "mongodb+srv://admin:admin@backapi.wojaaxk.mongodb.net/?retryWrites=true&w=majority";
 
-//const mongoURI = process.env.mongoURI || "mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.5.1";
+const mongoURI = process.env.mongoURI || "mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.5.1";
 
 
 export const videosCollection =  mongoose.model<VideoDBType>('videos', VideoModelScheme)
@@ -33,13 +33,7 @@ export const usersSessionsCollection = mongoose.model<UserSessionsType>('userSes
 export const recoveryCodeCollection = mongoose.model<RecoveryCodeType>('recoveryCode', RecoveryCodeScheme )
 export const likeStatusCollection = mongoose.model<LikeStatus>('likeStatus', LikeStatusScheme)
 
-// export const videosCollection = db.collection<VideoDBType>("videos")
-// export const bloggersCollection = db.collection<BlogDBType>("blogs")
-// export const postsCollection = db.collection<PostDBType>("posts")
-// export const usersCollection = db.collection<UserDBType>("users")
-// export const commentsCollection = db.collection<CommentDBModalType>("comments")
-// export const attemptsCollection = db.collection<AttemptsType>("attempts")
-// export const tokenBlackListCollection = db.collection<TokenType>('tokenBlackList')
+
 
 export async function runDB() {
     try {
