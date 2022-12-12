@@ -125,7 +125,12 @@ export const queryRepository = {
     async findDeviceByUseId(userId:string){
         return usersSessionsCollection.findOne({userId})
     },
-    findRecoveryCode(recoveryCode: string) {
+    async findRecoveryCode(recoveryCode: string) {
         return recoveryCodeCollection.findOne({recoveryCode})
-    }
+    },
+    async getPostByIdWithLikes(id: string, userId: string | undefined){
+        const getPostById = await postsCollection.find({id}, options)
+        const postWithLike = await postWithLikeStatus(getPostById, userId)
+        return postWithLike[0]
+    },
 }
