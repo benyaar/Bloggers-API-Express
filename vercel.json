@@ -4,9 +4,10 @@
   "builds": [
     { "src": "src/index.ts", "use": "@vercel/node" }
   ],
+
   "headers": [
     {
-      "source": "/api/(.*)",
+      "source":  { "src": "/(.*)", "dest": "src/index.ts" },
       "headers": [
         { "key": "Access-Control-Allow-Credentials", "value": "true" },
         { "key": "Access-Control-Allow-Origin", "value": "*" },
