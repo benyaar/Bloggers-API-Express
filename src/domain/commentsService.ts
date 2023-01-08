@@ -1,9 +1,7 @@
 import {CommentDBModalType, UserDBType} from "../types/types";
 import {ObjectId} from "mongodb";
 import {commentsRepository} from "../repository/commentsRepository";
-import {postsRepository} from "../repository/postsRepository";
-import {queryRepository} from "../queryRepository/queryRepository";
-import {likeStatusRepository} from "../repository/likeStatusRepository";
+
 
 
 export const commentsService = {

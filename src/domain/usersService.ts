@@ -39,7 +39,8 @@ export const usersService = {
             }
             }
         await usersRepository.createNewUser(newUser)
-       //await emailService.sendEmail(email, code)
+        const bodyTextMessage = `https://somesite.com/confirm-email?code=${newUser.emailConfirmation.confirmationCode}`
+        await emailService.sendEmail(email, "confirm code", bodyTextMessage )
 
         return newUser
     },
