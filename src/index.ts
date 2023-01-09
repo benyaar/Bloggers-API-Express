@@ -12,7 +12,6 @@ import {commentsRouter} from "./router/commentsRouter";
 import cookieParser from "cookie-parser";
 import {userSessionsRouter} from "./router/userSessionsRouter";
 
-
 const app = express()
 const port = process.env.PORT || 3000
 
